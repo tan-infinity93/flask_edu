@@ -1,0 +1,12 @@
+{
+	"MONGO_HOST": "127.0.0.1",
+	"MONGO_PORT": 27017,
+	"MONGO_USER": "guest",
+	"MONGO_PASSWORD": "guest",
+	"MONGO_DATABASE": "heroku_0vj717w3",
+	"MONGO_URL": "mongodb://heroku_0vj717w3:ihjpb0sdabvadpdnhnpg9rts9n@ds211099.mlab.com:11099/heroku_0vj717w3?authSource=heroku_0vj717w3&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false&retryWrites=false",
+	"FILE_UPLOAD_DIR": "/mnt/c/Users/TAN-PC/Desktop/work/flask_grocer/src/user_docs/",
+	"HOST": "127.0.0.1",
+	"PORT": 5000,
+	"DEBUG": false
+}
