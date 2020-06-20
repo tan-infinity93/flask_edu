@@ -8,6 +8,7 @@ from datetime import datetime
 from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
 from marshmallow import ValidationError
+from bson.objectid import ObjectId
 from app.schema import Users
 from bindings.flask_mongo import FlaskMongo
 # from utils.common_functions import get_uuid1, write_b64_to_file, save_file_to_s3
@@ -38,29 +39,22 @@ class Users(Resource):
 		args_data = request.args.to_dict()
 		print(args_data)
 
-		vendor = args_data.get("vendor", "all")
-		if vendor == "all":
-			queries = {
-				
-			}
-			columns = {
-				
-			}
+		user = args_data.get("user", "all")
+		if user == "all":
+			queries = {"deleted": 0}
+			columns = {"_id": 0}
 		else:
-			queries = {
-				
-			}
-			columns = {
-				
-			}
+			queries = {"_id": ObjectId(user), "deleted": 0}
+			columns = {"_id": 0}
 
-		query_data = FlaskMongo.find('', columns, **queries)
+		collection = 'common_user_master'
+		query_data = FlaskMongo.find(collection, columns, **queries)
 
 		print(f'query_data: {query_data}')
 
 		response = {
 			"meta": self.meta,
-			"vendors": query_data
+			"users": query_data
 		}
 		return response, self.success_code, self.headers
 
@@ -90,7 +84,7 @@ class Users(Resource):
 			username = post_data.get("username")
 			phone_no = post_data.get("phone_no")
 
-			columns = {"_id": 0, "mobile": 1}
+			columns = {"_id": 0}
 			queries = {"phone_no": phone_no}
 			user_data = FlaskMongo.find(collection, columns, **queries)
 
@@ -106,6 +100,7 @@ class Users(Resource):
 
 			post_data["no_free_trial"] = 2
 			post_data["is_active"] = True
+			post_data["deleted"] = 0
 			FlaskMongo.insert(db, collection, post_data)
 
 			response = {
@@ -123,7 +118,7 @@ class Users(Resource):
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
-				"reason": str(e)
+				"errors": e.messages
 			}
 			return response, self.bad_code, self.headers
 
@@ -146,10 +141,11 @@ class Users(Resource):
 			post_data = request.get_json()
 			print(args_data)
 			print(post_data)
-			vendor = args_data.get("vendor")
-			# print(f'condition: {(not vendor or post_data)}')
+			user = args_data.get("user")
+			# user = args_data.get("user", "all")
+			# print(f'condition: {(not user or post_data)}')
 
-			if not vendor or not post_data:
+			if not user or not post_data:
 				response = {
 					"meta": self.meta,
 					"message": "unable to process request",
@@ -157,17 +153,75 @@ class Users(Resource):
 				}
 				return response, self.bad_code, self.headers
 
-			vendor_data.load(post_data, partial=True)
+			users_data.load(post_data, partial=True)
+
+			columns = {"_id": 0}
+			queries = {"_id": ObjectId(user)}
+			collection = 'common_user_master'
+			user_data = FlaskMongo.find(collection, columns, **queries)
+
+			if user_data == []:
+				response = {
+					"meta": self.meta,
+					"message": f"user {user} does not exists",
+					"status": "failure",
+				}
+				return response, self.bad_code, self.headers
 
 			updates = post_data
 			queries = {
-				"deleted": 0, "unique_id": vendor
+				"_id": ObjectId(user)
 			}
-			FlaskMongo.update('vendor_details', updates, **queries)
+			collection = 'common_user_master'
+			FlaskMongo.update(collection, updates, **queries)
 
 			response = {
 				"meta": self.meta,
-				"message": f"vendor {vendor} updated successfully",
+				"message": f"user {user} updated successfully",
+				"status": "success"
+			}
+			return response, self.success_code, self.headers
+
+		except Exception as e:
+			# raise e
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": str(e)
+			}
+			return response, self.exception_code, self.headers
+
+	def delete(self):
+		'''
+		'''
+		try:
+			args_data = request.args.to_dict()
+			post_data = request.get_json()
+			print(args_data)
+			print(post_data)
+			user = args_data.get("user")
+			# user = args_data.get("user", "all")
+			# print(f'condition: {(not user or post_data)}')
+
+			if not user:
+				response = {
+					"meta": self.meta,
+					"message": "unable to process request",
+					"status": "failure",
+				}
+				return response, self.bad_code, self.headers
+
+			updates = {"delete": 0}
+			queries = {
+				"_id": ObjectId(user)
+			}
+			collection = 'common_user_master'
+			FlaskMongo.update(collection, updates, **queries)
+
+			response = {
+				"meta": self.meta,
+				"message": f"user {user} updated successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers

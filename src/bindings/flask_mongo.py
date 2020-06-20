@@ -70,13 +70,11 @@ class FlaskMongo:
 			# return list(data)
 
 			if isinstance(data, pymongo.cursor.Cursor):
-			# 	print('if')
-			# 	print(list(data))
-				return [d for d in data]
-			# 	# return list(data)
-			else:
-				print('else')
-				return data
+				data = [d for d in data]
+				if len(data) == 1:
+					return data[0]
+				else:
+					return data
 
 		except Exception as e:
 			raise e
