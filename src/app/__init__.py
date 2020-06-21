@@ -34,13 +34,14 @@ def create_app(config_name):
 	from routes.test import TestQuestionDetails
 	# from routes.ui import VendorUI
 
-	api.add_resource(Welcome, '/edu/v1/welcome', methods=['GET'], endpoint='welcome_api')
+	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 	api.add_resource(Users, '/edu/v1/users/get-user', methods=['GET'], endpoint='get_user')
 	api.add_resource(Users, '/edu/v1/users/add-user', methods=['POST'], endpoint='add_user')
 	api.add_resource(Users, '/edu/v1/users/mod-user', methods=['PUT'], endpoint='mod_user')
 	# api.add_resource(Vendor, '/edu/v1/vendor', methods=['GET'], endpoint='get_vendor')
 	# api.add_resource(VendorUI, '/', methods=['GET'], endpoint='register_vendor')
-	api.add_resource(TestQuestionDetails, '/edu/v1/test', methods=['POST'], endpoint='add_test')
-	# api.add_resource(Vendor, '/edu/v1/vendor', methods=['PUT'], endpoint='mod_vendor')
+	api.add_resource(TestQuestionDetails, '/edu/v1/tests/get-test', methods=['GET'], endpoint='get_test')
+	api.add_resource(TestQuestionDetails, '/edu/v1/tests/create-test', methods=['POST'], endpoint='add_test')
+	api.add_resource(TestQuestionDetails, '/edu/v1/tests/mod-test', methods=['PUT'], endpoint='mod_test')
 
 	return app

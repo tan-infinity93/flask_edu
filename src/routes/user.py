@@ -36,27 +36,39 @@ class Users(Resource):
 	def get(self):
 		'''
 		'''
-		args_data = request.args.to_dict()
-		print(args_data)
+		try:
+			args_data = request.args.to_dict()
+			print(args_data)
 
-		user = args_data.get("user", "all")
-		if user == "all":
-			queries = {"deleted": 0}
-			columns = {"_id": 0}
-		else:
-			queries = {"_id": ObjectId(user), "deleted": 0}
-			columns = {"_id": 0}
+			user = args_data.get("user", "all")
+			if user == "all":
+				queries = {"deleted": 0}
+				columns = {"_id": 0}
+			else:
+				queries = {"_id": ObjectId(user), "deleted": 0}
+				columns = {"_id": 0}
 
-		collection = 'common_user_master'
-		query_data = FlaskMongo.find(collection, columns, **queries)
+			collection = 'common_user_master'
+			query_data = FlaskMongo.find(collection, columns, **queries)
 
-		print(f'query_data: {query_data}')
+			print(f'query_data: {query_data}')
 
-		response = {
-			"meta": self.meta,
-			"users": query_data
-		}
-		return response, self.success_code, self.headers
+			response = {
+				"meta": self.meta,
+				"users": query_data
+			}
+			return response, self.success_code, self.headers
+
+		except Exception as e:
+			# raise e
+			print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": str(e)
+			}
+			return response, self.exception_code, self.headers
 
 	def post(self):
 		'''
@@ -101,6 +113,7 @@ class Users(Resource):
 			post_data["no_free_trial"] = 2
 			post_data["is_active"] = True
 			post_data["deleted"] = 0
+			post_data["created"] = datetime.now().isoformat()
 			FlaskMongo.insert(db, collection, post_data)
 
 			response = {

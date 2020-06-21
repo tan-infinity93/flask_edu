@@ -71,10 +71,18 @@ class FlaskMongo:
 
 			if isinstance(data, pymongo.cursor.Cursor):
 				data = [d for d in data]
+				print(f'data: {data}\n')
 				if len(data) == 1:
-					return data[0]
+					data = data[0]
+					if "_id" in data:
+						data["_id"] = str(data.get("_id"))
 				else:
-					return data
+					for d in data:
+						if "_id" in d:
+							d["_id"] = str(d.get("_id"))
+
+				print(f'data2: {data}\n')
+				return data
 
 		except Exception as e:
 			raise e

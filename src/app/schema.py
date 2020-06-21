@@ -41,7 +41,7 @@ class TestDetails(Schema):
 	testid = fields.Str(required=False)
 	details = fields.Str(required=True)
 	schedule = fields.DateTime(required=True)
-	duration = fields.Integer(required=True, strict=True)
+	duration = fields.Float(required=True)
 	created = fields.DateTime(required=True)
 	start_time = fields.DateTime(required=True)
 	end_time = fields.DateTime(required=True)
@@ -50,6 +50,7 @@ class TestDetails(Schema):
 class QuestionAnswer(Schema):
 	'''
 	'''
+	_id = fields.Str(required=False)
 	question = fields.Str(required=True)
 	options = fields.List(
 		fields.Str(),
