@@ -8,6 +8,12 @@ from marshmallow.validate import OneOf
 
 # Schema Definitions:
 
+class Token(Schema):
+	'''
+	'''
+	username = fields.Str(required=True)
+	password = fields.Str(required=True)
+
 class Users(Schema):
 	'''
 	'''
