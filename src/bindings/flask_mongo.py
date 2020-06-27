@@ -36,13 +36,17 @@ class FlaskMongo:
 		app.config['MONGO_DATABASE'] = self.mongo_database
 
 	@staticmethod
-	def insert(db, collection, data):
+	def insert(db, collection, data, bulk=False):
 		'''
 		'''
 		try:
 			db = c_app.config.get('MONGO_DATABASE')
 			col = db[collection]
-			col.insert_one(data)
+
+			if bulk:
+				col.insert_many(data)
+			else:
+				col.insert_one(data)
 
 		except Exception as e:
 			raise e

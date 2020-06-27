@@ -6,6 +6,9 @@
 	"MONGO_DATABASE": "whatsapp_edu",
 	"MONGO_URL": "mongodb://localhost:27017/",
 	"FILE_UPLOAD_DIR": "C:\\Users\\TAN-PC\\Desktop\\work\\flask_grocer\\src\\user_data",
+	"AWS_ACCESS_KEY_ID": "AKIAJWIDY7D3OOEXXJAQ",
+	"AWS_SECRET_ACCESS_KEY": "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",
+	"AWS_REGION": "us-east-2",
 	"HOST": "127.0.0.1",
 	"PORT": 5000,
 	"DEBUG": true
