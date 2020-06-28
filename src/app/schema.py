@@ -14,7 +14,7 @@ class Token(Schema):
 	username = fields.Str(required=True)
 	password = fields.Str(required=True)
 
-class Users(Schema):
+class TeacherUsers(Schema):
 	'''
 	'''
 	valid_institute_types = ['school', 'jr.college', 'degree college']
@@ -39,6 +39,11 @@ class Users(Schema):
 			OneOf([True, False])
 		]
 	)
+
+class StudentUsers(Schema):
+	'''
+	'''
+	
 
 class TestDetails(Schema):
 	'''

@@ -52,41 +52,41 @@ class FlaskMongo:
 			raise e
 
 	@staticmethod
-	def find(collection, columns, **queries):
+	def find(collection, columns, queries, distinct=False, distinct_column=None):
 		'''
 		'''
 		try:
 			db = c_app.config.get('MONGO_DATABASE')
 			col = db[collection]
-			data = col.find(queries, columns)
+			
+			if distinct:
+				data = col.distinct(distinct_column)
+				# data = [d for d in data]
 
-			print(f'queries: {queries}')
-			print(f'columns: {columns}')
-			print(f'collection: {collection}')
-			# print(f'data: {list(data)}')
+			else:
+				data = col.find(queries, columns)
 
-			print(type(data))
+				print(f'queries: {queries}')
+				print(f'columns: {columns}')
+				print(f'collection: {collection}')
+				# print(f'data: {list(data)}')
 
-			# if queries == {}:
-			# 	data = col.find(queries, columns)
-			# else:
-			# 	data = col.find_one(queries, columns)
-			# return list(data)
+				print(type(data))
 
-			if isinstance(data, pymongo.cursor.Cursor):
-				data = [d for d in data]
-				print(f'data: {data}\n')
-				if len(data) == 1:
-					data = data[0]
-					if "_id" in data:
-						data["_id"] = str(data.get("_id"))
-				else:
+				if isinstance(data, pymongo.cursor.Cursor):
+					data = [d for d in data]
+					print(f'data: {data}\n')
+					# if len(data) == 1:
+					# 	data = data[0]
+					# 	if "_id" in data:
+					# 		data["_id"] = str(data.get("_id"))
+					# else:
 					for d in data:
 						if "_id" in d:
 							d["_id"] = str(d.get("_id"))
 
-				print(f'data2: {data}\n')
-				return data
+					# print(f'data2: {data}\n')
+			return data
 
 		except Exception as e:
 			raise e

@@ -44,13 +44,42 @@ class TestQuestionDetails(Resource):
 			print(args_data)
 
 			testid = args_data.get("testid", "all")
+			collection1 = 'common_test_master'
+			collection2 = 'common_question_master'
+
 			if testid == "all":
-				queries = {
-					
-				}
-				columns = {
-					
-				}
+				columns1 = {"_id": 0}
+				queries1 = {}
+				query_data1 = FlaskMongo.find(
+					collection1, columns1, queries1
+				)
+				print(f'query_data1: {query_data1}\n')
+
+				# testids = [test.get("id") for test in query_data1]
+				test_data = {}
+
+				for idx, qd1 in enumerate(query_data1):
+					columns2 = {"_id": 0}
+					queries2 = {"testid": qd1.get("id")}
+					query_data2 = FlaskMongo.find(collection2, columns2, queries2)
+					print(f'query_data2: {query_data2}\n')
+					print(f'type: {type(query_data2)}\n')
+
+					details = []
+
+					for qd2 in query_data2:
+						# qd2.pop("customerid")
+						# qd2.pop("testid")
+						
+						# qd1.pop("id")
+						qd1.update(qd2)
+
+						print(f'td: {qd1}')
+						details.append(
+							qd1
+						)
+					test_data[idx] = details
+
 			else:
 				queries1 = {
 					"id": testid
@@ -66,25 +95,25 @@ class TestQuestionDetails(Resource):
 					"customerid": 0, "testid": 0
 				}
 
-			collection1 = 'common_test_master'
-			collection2 = 'common_question_master'
-			query_data1 = FlaskMongo.find(collection1, columns1, **queries1)
-			query_data2 = FlaskMongo.find(collection2, columns2, **queries2)
+			
+				query_data1 = FlaskMongo.find(collection1, columns1, queries1, aggregate=False)
+				query_data2 = FlaskMongo.find(collection2, columns2, queries2, aggregate=False)
 
-			print(f'query_data1: {query_data1}\n')
-			print(f'query_data2: {query_data2}\n')
+				# print(f'query_data1: {query_data1}\n')
+				# print(f'query_data2: {query_data2}\n')
 
-			query_data1['test_id'] = query_data1.pop('id')
-			query_data1['qna'] = query_data2
+				query_data1['test_id'] = query_data1.pop('id')
+				query_data1['qna'] = query_data2
+				test_data = query_data1
 
 			response = {
 				"meta": self.meta,
-				"test_data": query_data1
+				"test_data": test_data
 			}
 			return response, self.success_code, self.headers
 
 		except Exception as e:
-			# raise e
+			raise e
 			print(e)
 			response = {
 				"meta": self.meta,
