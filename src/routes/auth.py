@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 from app.schema import Token
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
-# from utils.common_functions import get_uuid1, write_b64_to_file, save_file_to_s3
+from utils.common_functions import generate_auth_token #get_uuid1, write_b64_to_file, save_file_to_s3
 
 token_data = Token()
 
@@ -32,6 +32,7 @@ class Auth(Resource):
 		self.headers = {"Content-Type": "application/json"}
 		self.success_code = 200
 		self.bad_code = 400
+		self.auth_code = 401
 		self.process_error_code = 422
 		self.exception_code = 500
 
@@ -40,7 +41,45 @@ class Auth(Resource):
 		'''
 		'''
 		try:
-			pass
+			post_data = request.get_json()
+			token_data.load(post_data)
+
+			columns = {"_id": 0}
+			queries = post_data
+			collection = 'common_user_master'
+			user_data = FlaskMongo.find(collection, columns, queries)
+
+			print(post_data)
+			username = post_data.get('username')
+
+			if user_data == []:
+				response = {
+					"meta": self.meta,
+					"message": f"user {username} does not exists",
+					"status": "failure",
+				}
+				return response, self.auth_code, self.headers
+
+			auth_token = generate_auth_token(post_data)
+
+			response = {
+				"meta": self.meta,
+				"token": auth_token,
+				"status": "success"
+			}
+			return response, self.success_code, self.headers
+
+		except ValidationError as e:
+			# raise e
+			# print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"errors": e.messages
+			}
+			return response, self.bad_code, self.headers
+
 		except Exception as e:
 			# raise e
 			response = {

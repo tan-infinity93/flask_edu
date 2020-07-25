@@ -30,12 +30,15 @@ def create_app(config_name):
 	# Add API Routes:
 
 	from routes.welcome import Welcome
+	from routes.auth import Auth
 	from routes.teacher import TeacherUsers
 	from routes.student import StudentUsers
 	from routes.test import TestQuestionDetails
 	# from routes.ui import VendorUI
 
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
+
+	api.add_resource(Auth, '/edu/v1/api/generate-token', methods=['POST'], endpoint='generate_token')
 	
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/get-user', methods=['GET'], endpoint='get_tuser')
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/add-user', methods=['POST'], endpoint='add_tuser')

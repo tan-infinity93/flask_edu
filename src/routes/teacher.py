@@ -10,6 +10,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from app.schema import TeacherUsers
+from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
 # from utils.common_functions import get_uuid1, write_b64_to_file, save_file_to_s3
 
@@ -43,14 +44,20 @@ class TeacherUsers(Resource):
 
 			user = args_data.get("user", "all")
 			if user == "all":
-				queries = {"deleted": 0}
-				columns = {"_id": 0}
+				queries = {"deleted": 0, "account_type": self.account_type}
+				columns = {"_id": 0, "deleted": 0}
+				collection = 'common_user_master'
+				query_data = FlaskMongo.find(collection, columns, queries)
+			
 			else:
-				queries = {"_id": ObjectId(user), "deleted": 0}
-				columns = {"_id": 0}
-
-			collection = 'common_user_master'
-			query_data = FlaskMongo.find(collection, columns, **queries)
+				queries = {"_id": ObjectId(user), "deleted": 0, "account_type": "teacher"}
+				columns = {"_id": 0, "deleted": 0}
+				collection = 'common_user_master'
+				query_data = FlaskMongo.find(collection, columns, queries)
+				if query_data:
+					query_data = query_data[0]
+				else:
+					query_data = {}
 
 			print(f'query_data: {query_data}')
 
@@ -71,6 +78,7 @@ class TeacherUsers(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_json
 	def post(self):
 		'''
 		'''
@@ -79,16 +87,16 @@ class TeacherUsers(Resource):
 
 			teacherusers_data.load(post_data)
 			name = post_data.get("name")
-			mobile = post_data.get("mobile")
+			# mobile = post_data.get("mobile")
 			print(post_data.keys())
 
-			if not post_data:
-				response = {
-					"meta": self.meta,
-					"message": "unable to process request",
-					"status": "failure",
-				}
-				return response, self.bad_code, self.headers
+			# if not post_data:
+			# 	response = {
+			# 		"meta": self.meta,
+			# 		"message": "unable to process request",
+			# 		"status": "failure",
+			# 	}
+			# 	return response, self.bad_code, self.headers
 
 			# Check for already exising entry:
 
@@ -99,7 +107,7 @@ class TeacherUsers(Resource):
 
 			columns = {"_id": 0}
 			queries = {"phone_no": phone_no}
-			user_data = FlaskMongo.find(collection, columns, **queries)
+			user_data = FlaskMongo.find(collection, columns, queries)
 
 			print(post_data)
 
@@ -138,7 +146,7 @@ class TeacherUsers(Resource):
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
-			# raise e
+			raise e
 			print(e)
 			response = {
 				"meta": self.meta,
@@ -148,6 +156,8 @@ class TeacherUsers(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_args
+	@is_valid_json
 	def put(self):
 		'''
 		'''
@@ -173,7 +183,7 @@ class TeacherUsers(Resource):
 			columns = {"_id": 0}
 			queries = {"_id": ObjectId(user)}
 			collection = 'common_user_master'
-			user_data = FlaskMongo.find(collection, columns, **queries)
+			user_data = FlaskMongo.find(collection, columns, queries)
 
 			if user_data == []:
 				response = {
@@ -188,7 +198,7 @@ class TeacherUsers(Resource):
 				"_id": ObjectId(user)
 			}
 			collection = 'common_user_master'
-			FlaskMongo.update(collection, updates, **queries)
+			FlaskMongo.update(collection, updates, queries)
 
 			response = {
 				"meta": self.meta,
@@ -232,7 +242,7 @@ class TeacherUsers(Resource):
 				"_id": ObjectId(user)
 			}
 			collection = 'common_user_master'
-			FlaskMongo.update(collection, updates, **queries)
+			FlaskMongo.update(collection, updates, queries)
 
 			response = {
 				"meta": self.meta,

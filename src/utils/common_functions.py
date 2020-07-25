@@ -7,6 +7,8 @@ import os
 import uuid
 import time
 import base64
+import secrets
+import jwt
 import boto3
 from flask import current_app as c_app
 
@@ -17,6 +19,28 @@ def get_uuid1():
 		return str(uuid.uuid1())
 	except Exception as e:
 		raise e
+
+def format_api_error(error):
+	'''
+	'''
+	try:
+		pass
+	except Exception as e:
+		print(e)
+
+def generate_auth_token(payload):
+	'''
+	'''
+	try:
+		key = c_app.config.get('SECRET_KEY')
+		headers = {'kid': secrets.token_hex(10)}
+		token = jwt.encode(payload, key, algorithm='HS256', headers=headers)
+		token = token.decode('UTF-8')
+		print(type(token))
+		return token
+
+	except Exception as e:
+		print(e)
 
 def write_b64_to_file(path, b64_str, file_name, mobile, name):
 	try:

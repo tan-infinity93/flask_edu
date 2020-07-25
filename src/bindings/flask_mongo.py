@@ -93,7 +93,7 @@ class FlaskMongo:
 
 
 	@staticmethod
-	def update(collection, updates, **queries):
+	def update(collection, updates, queries):
 		'''
 		'''
 		try:
