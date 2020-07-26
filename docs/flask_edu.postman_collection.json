@@ -267,6 +267,248 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "Create New Test",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"end_time\": \"2020-07-31T12:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 10,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 2.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/tests/create-test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"tests",
+								"create-test"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/tests/create-test"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Test Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"tests",
+								"get-test"
+							],
+							"query": [
+								{
+									"key": "testid",
+									"value": "all",
+									"disabled": true
+								},
+								{
+									"key": "testid",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/tests/get-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Test Data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"end_time\": \"2020-07-31T12:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 10,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"d\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 3.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/tests/mod-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"tests",
+								"mod-test"
+							],
+							"query": [
+								{
+									"key": "testid",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/tests/mod-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Test-Attempts",
+			"item": [
+				{
+					"name": "Create New Test Attempt",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n\t\t\t\"answer\": \"d\",\r\n\t\t\t\"is_correct\": true \r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/testattempts/create-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"testattempts",
+								"create-test"
+							],
+							"query": [
+								{
+									"key": "test_id",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								},
+								{
+									"key": "student_id",
+									"value": "5f1c986faa7b778d609d6c3f"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/testattempts/create-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Test Attempts",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n\t\t\t\"answer\": \"d\",\r\n\t\t\t\"is_correct\": false \r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/testattempts/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"testattempts",
+								"mod-test"
+							],
+							"query": [
+								{
+									"key": "test_id",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								},
+								{
+									"key": "student_id",
+									"value": "5f1c986faa7b778d609d6c3f"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/testattempts/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Test Completion Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"is_complete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/testcomplete/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"testcomplete",
+								"mod-test"
+							],
+							"query": [
+								{
+									"key": "test_id",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								},
+								{
+									"key": "student_id",
+									"value": "5f1c986faa7b778d609d6c3f"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/testcomplete/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

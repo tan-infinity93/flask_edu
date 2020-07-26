@@ -34,7 +34,7 @@ def create_app(config_name):
 	from routes.teacher import TeacherUsers
 	from routes.student import StudentUsers
 	from routes.test import TestQuestionDetails
-	# from routes.ui import VendorUI
+	from routes.testattempt import TestAttemptDetails, TestAttemptComplete
 
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 
@@ -48,10 +48,14 @@ def create_app(config_name):
 	api.add_resource(StudentUsers, '/edu/v1/users/student/add-user', methods=['POST'], endpoint='add_suser')
 	api.add_resource(StudentUsers, '/edu/v1/users/student/mod-user', methods=['PUT'], endpoint='mod_suser')
 
-	# api.add_resource(Vendor, '/edu/v1/vendor', methods=['GET'], endpoint='get_vendor')
-	# api.add_resource(VendorUI, '/', methods=['GET'], endpoint='register_vendor')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/get-test', methods=['GET'], endpoint='get_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/create-test', methods=['POST'], endpoint='add_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/mod-test', methods=['PUT'], endpoint='mod_test')
 
+	api.add_resource(TestAttemptDetails, '/edu/v1/testattempts/create-test', methods=['POST'], endpoint='create_testa')
+	api.add_resource(TestAttemptDetails, '/edu/v1/testattempts/mod-test', methods=['PUT'], endpoint='mod_testa')
+
+	api.add_resource(TestAttemptComplete, '/edu/v1/testcomplete/mod-test', methods=['PUT'], endpoint='mod_testc')
+
+	
 	return app

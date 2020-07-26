@@ -15,6 +15,8 @@ from flask import current_app as c_app
 # Function Definitions:
 
 def get_uuid1():
+	'''
+	'''
 	try:
 		return str(uuid.uuid1())
 	except Exception as e:

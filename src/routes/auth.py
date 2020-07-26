@@ -55,7 +55,8 @@ class Auth(Resource):
 			if user_data == []:
 				response = {
 					"meta": self.meta,
-					"message": f"user {username} does not exists",
+					# "message": f"user {username} does not exists",
+					"message": "please check provided credentials",
 					"status": "failure",
 				}
 				return response, self.auth_code, self.headers

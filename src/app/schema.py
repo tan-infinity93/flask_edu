@@ -65,12 +65,13 @@ class QuestionAnswer(Schema):
 	question = fields.Str(required=True)
 	options = fields.List(
 		fields.Str(),
-		required=True,
+		required=False,
 		validate=[
 			validate.Length(min=4), validate.Length(max=4)
 		]
 	)
 	answer = fields.Str(required=True)
+	is_correct = fields.Boolean(required=False)
 
 class TestQuestionDetails(TestDetails):
 	'''
@@ -79,3 +80,16 @@ class TestQuestionDetails(TestDetails):
 		fields.Nested(QuestionAnswer),
 		required=True
 	)
+
+class TestAttempt(Schema):
+	'''
+	'''
+	student_id = fields.Str(required=True)
+	test_id = fields.Str(required=True)
+	student_name = fields.Str(required=True)
+	phone_no = fields.Str(required=True)
+	qna = fields.List(
+		fields.Nested(QuestionAnswer),
+		required=True
+	)
+	is_complete = fields.Boolean(required=False)

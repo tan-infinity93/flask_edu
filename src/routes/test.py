@@ -96,12 +96,13 @@ class TestQuestionDetails(Resource):
 				}
 
 			
-				query_data1 = FlaskMongo.find(collection1, columns1, queries1, aggregate=False)
-				query_data2 = FlaskMongo.find(collection2, columns2, queries2, aggregate=False)
+				query_data1 = FlaskMongo.find(collection1, columns1, queries1)
+				query_data2 = FlaskMongo.find(collection2, columns2, queries2)
 
 				# print(f'query_data1: {query_data1}\n')
 				# print(f'query_data2: {query_data2}\n')
 
+				query_data1 = query_data1[0]
 				query_data1['test_id'] = query_data1.pop('id')
 				query_data1['qna'] = query_data2
 				test_data = query_data1
@@ -123,7 +124,7 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
-	@is_valid_json
+	# @is_valid_json
 	def post(self):
 		"""
 		"""
@@ -224,7 +225,7 @@ class TestQuestionDetails(Resource):
 				'_id': 0
 			}
 			collection = 'common_test_master'
-			query_data = FlaskMongo.find(collection, columns, **queries)
+			query_data = FlaskMongo.find(collection, columns, queries)
 
 			if not query_data:
 				response = {
@@ -252,7 +253,7 @@ class TestQuestionDetails(Resource):
 			queries1 = {
 				"id": testid
 			}
-			FlaskMongo.update(collection1, updates1, **queries1)
+			FlaskMongo.update(collection1, updates1, queries1)
 			
 			for qna in post_data.get("qna"):
 				data2 = {
@@ -269,7 +270,7 @@ class TestQuestionDetails(Resource):
 				queries2 = {
 					"_id": ObjectId(qna.get("_id")), "testid": testid, "customerid": data2.get("customerid")
 				}
-				FlaskMongo.update(collection2, updates2, **queries2)
+				FlaskMongo.update(collection2, updates2, queries2)
 			####
 
 			response = {
