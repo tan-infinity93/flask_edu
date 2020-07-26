@@ -24,7 +24,11 @@ def format_api_error(error):
 	'''
 	'''
 	try:
-		pass
+		errors = {}
+		for k, v in error.items():
+			errors[k] = v[0]
+		return errors
+
 	except Exception as e:
 		print(e)
 

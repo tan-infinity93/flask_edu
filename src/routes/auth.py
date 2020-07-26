@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 from app.schema import Token
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
-from utils.common_functions import generate_auth_token #get_uuid1, write_b64_to_file, save_file_to_s3
+from utils.common_functions import generate_auth_token, format_api_error #get_uuid1, write_b64_to_file, save_file_to_s3
 
 token_data = Token()
 
@@ -76,7 +76,7 @@ class Auth(Resource):
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
-				"errors": e.messages
+				"errors": format_api_error(e.messages)
 			}
 			return response, self.bad_code, self.headers
 

@@ -141,7 +141,7 @@ class TeacherUsers(Resource):
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
-				"errors": e.messages
+				"errors": format_api_error(e.messages)
 			}
 			return response, self.bad_code, self.headers
 

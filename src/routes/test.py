@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 from app.schema import TestQuestionDetails
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
-# from utils.common_functions import get_uuid1, write_b64_to_file, save_file_to_s3
+from utils.common_functions import format_api_error#get_uuid1, write_b64_to_file, save_file_to_s3
 
 testquestion_data = TestQuestionDetails()
 
@@ -181,7 +181,7 @@ class TestQuestionDetails(Resource):
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
-				"reason": str(e)
+				"reason": format_api_error(e.messages)
 			}
 			return response, self.bad_code, self.headers
 		
@@ -284,7 +284,7 @@ class TestQuestionDetails(Resource):
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
-				"reason": str(e)
+				"reason": format_api_error(e.messages)
 			}
 			return response, self.bad_code, self.headers
 
