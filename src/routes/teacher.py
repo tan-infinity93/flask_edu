@@ -50,7 +50,7 @@ class TeacherUsers(Resource):
 				query_data = FlaskMongo.find(collection, columns, queries)
 			
 			else:
-				queries = {"_id": ObjectId(user), "deleted": 0, "account_type": "teacher"}
+				queries = {"_id": ObjectId(user), "deleted": 0, "account_type": self.account_type}
 				columns = {"_id": 0, "deleted": 0}
 				collection = 'common_user_master'
 				query_data = FlaskMongo.find(collection, columns, queries)

@@ -35,6 +35,7 @@ def create_app(config_name):
 	from routes.student import StudentUsers
 	from routes.test import TestQuestionDetails
 	from routes.testattempt import TestAttemptDetails, TestAttemptComplete
+	from routes.stats import TestScoresStats
 
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 
@@ -57,5 +58,6 @@ def create_app(config_name):
 
 	api.add_resource(TestAttemptComplete, '/edu/v1/testcomplete/mod-test', methods=['PUT'], endpoint='mod_testc')
 
+	api.add_resource(TestScoresStats, '/edu/v1/teststats/get-test', methods=['GET'], endpoint='get_test_stats')
 	
 	return app

@@ -132,7 +132,7 @@ class TestQuestionDetails(Resource):
 			args_data = request.args.to_dict()
 			post_data = request.get_json()
 
-			print(post_data)
+			# print(post_data)
 
 			testquestion_data.load(post_data)
 
@@ -142,7 +142,7 @@ class TestQuestionDetails(Resource):
 			collection1 = 'common_test_master'
 			collection2 = 'common_question_master'
 
-			print(post_data)
+			# print(post_data)
 
 			testid = str(uuid.uuid1())#.replace("-", "")
 

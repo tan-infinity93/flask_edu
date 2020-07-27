@@ -112,12 +112,12 @@ class TestAttemptDetails(Resource):
 						"test_id": test_id,
 						"question_id": qa.get("_id"),
 						"question": qa.get("question"),
-						"answer": qa.get("option_selected"),
-						"is_correct": qa.get("is_correct")
+						"answer": qa.get("answer"),
+						"is_correct": qa.get("is_correct"),
+						"timestamp": datetime.now().isoformat()
 					}
 					for qa in post_data.get('qna')
 				]
-				data2["timestamp"] = datetime.now().isoformat()
 			
 				# Bulk Insert Records Here:
 
@@ -168,6 +168,7 @@ class TestAttemptDetails(Resource):
 			testattempt_data.load(post_data, partial=True)
 			student_name = post_data.get("student_name")
 			phone_no = post_data.get("phone_no")
+			is_complete = post_data.get("is_complete")
 
 			print(post_data.keys())
 
@@ -205,8 +206,8 @@ class TestAttemptDetails(Resource):
 				}
 				updates1 = {
 					"student_name": student_name,
-					"phone_no": phone_no
-					# "is_complete": True,
+					"phone_no": phone_no,
+					# "is_complete": is_complete
 				}
 				# data1["created"] = datetime.now().isoformat()
 				
@@ -220,9 +221,15 @@ class TestAttemptDetails(Resource):
 						"question": qa.get("question"),
 					}
 					updates2 ={
-						"answer": qa.get("option_selected"),
+						"answer": qa.get("answer"),
 						"is_correct": qa.get("is_correct")
 					}
+
+					# updates2 ={}
+					# if qa.get("option_selected"):
+					# 	updates2.update({"answer": qa.get("option_selected")})
+					# if qa.get("is_correct"):
+					# 	updates2.update({"is_correct": qa.get("is_correct")})
 			
 					# Update Question Answers Here:
 

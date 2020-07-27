@@ -28,7 +28,10 @@ def format_api_error(error):
 	try:
 		errors = {}
 		for k, v in error.items():
-			errors[k] = v[0]
+			if isinstance(v, list):
+				errors[k] = v[0]
+			elif isinstance(v, str):
+				errors[k] = v
 		return errors
 
 	except Exception as e:
