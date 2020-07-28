@@ -159,7 +159,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=all",
+							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f1c986faa7b778d609d6c3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,12 +175,12 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "5f1c986faa7b778d609d6c3f",
-									"disabled": true
+									"value": "5f1c986faa7b778d609d6c3f"
 								},
 								{
 									"key": "user",
-									"value": "all"
+									"value": "all",
+									"disabled": true
 								}
 							]
 						},
@@ -278,7 +278,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"end_time\": \"2020-07-31T12:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 10,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 2.0\r\n}",
+							"raw": "{\r\n    \"details\": \"New Maths Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"end_time\": \"2020-07-31T14:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 2.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -309,7 +309,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=27c9eba2-d050-11ea-83f2-b42e998c02ed",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -329,7 +329,12 @@
 								},
 								{
 									"key": "testid",
-									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "testid",
+									"value": "27c9eba2-d050-11ea-83f2-b42e998c02ed"
 								}
 							]
 						},
@@ -388,7 +393,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n\t\t\t\"answer\": \"d\",\r\n\t\t\t\"is_correct\": true \r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1f470f80f1b481125fda11\",\r\n            \"question\": \"2+2\",\r\n\t\t\t\"answer\": \"d\" \r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -396,7 +401,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/testattempts/create-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
+							"raw": "http://localhost:5000/edu/v1/testattempts/create-test?test_id=27c9eba2-d050-11ea-83f2-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -411,7 +416,7 @@
 							"query": [
 								{
 									"key": "test_id",
-									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+									"value": "27c9eba2-d050-11ea-83f2-b42e998c02ed"
 								},
 								{
 									"key": "student_id",
@@ -430,7 +435,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n\t\t\t\"answer\": \"d\",\r\n\t\t\t\"is_correct\": false \r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1f470f80f1b481125fda11\",\r\n            \"question\": \"2+2\",\r\n\t\t\t\"answer\": \"c\",\r\n\t\t\t\"is_correct\": true\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -438,7 +443,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/testattempts/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
+							"raw": "http://localhost:5000/edu/v1/testattempts/mod-test?test_id=27c9eba2-d050-11ea-83f2-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -453,7 +458,7 @@
 							"query": [
 								{
 									"key": "test_id",
-									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+									"value": "27c9eba2-d050-11ea-83f2-b42e998c02ed"
 								},
 								{
 									"key": "student_id",
@@ -504,6 +509,151 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/testcomplete/mod-test?test_id=72c4876a-cf4d-11ea-b5ea-b42e998c02ed&student_id=5f1c986faa7b778d609d6c3f"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "Get Test Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/teststats/get-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"teststats",
+								"get-test"
+							],
+							"query": [
+								{
+									"key": "testid",
+									"value": "27c9eba2-d050-11ea-83f2-b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "testid",
+									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/teststats/get-test?testid=27c9eba2-d050-11ea-83f2-b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/studentstats/get-test?studentid=5f1c986faa7b778d609d6c3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"studentstats",
+								"get-test"
+							],
+							"query": [
+								{
+									"key": "studentid",
+									"value": "5f1c986faa7b778d609d6c3f"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/studentstats/get-test?studentid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Create New Room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222417\",\r\n    \"limit\": 10,\r\n    \"agenda\": \"Semester II\",\r\n    \"room_name\": \"Physics Test 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/create-room",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"create-room"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/create-room"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single / All Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/get-room?room=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"get-room"
+							],
+							"query": [
+								{
+									"key": "room",
+									"value": "all",
+									"disabled": true
+								},
+								{
+									"key": "room",
+									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
+								},
+								{
+									"key": "teacherid",
+									"value": "5f1c8e11677eb6114c222416"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/get-room?room=all&room&teacherid=5f1c8e11677eb6114c222416"
 					},
 					"response": []
 				}
