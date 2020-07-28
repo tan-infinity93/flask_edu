@@ -125,3 +125,13 @@ class TestAttempt(Schema):
 		required=True
 	)
 	is_complete = fields.Boolean(required=False)
+
+class Rooms(Schema):
+	'''
+	'''
+	teacher_id = fields.Str(required=True)
+	room_id = fields.Str(required=False)
+	limit = fields.Integer(required=True, strict=True)
+	agenda = fields.Str(required=True)
+	room_name = fields.Str(required=True)
+	deleted = fields.Boolean(required=False)
