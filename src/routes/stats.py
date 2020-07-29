@@ -187,3 +187,89 @@ class StudentsStats(Resource):
                 "reason": str(e)
             }
             return response, self.exception_code, self.headers
+
+class RoomsStats(Resource):
+    '''
+    '''
+    def __init__(self):
+        '''
+        '''
+        self.meta = {
+            "version": 1.0,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.headers = {"Content-Type": "application/json"}
+        self.success_code = 200
+        self.bad_code = 400
+        self.no_data_code = 404
+        self.process_error_code = 422
+        self.exception_code = 500
+
+    @is_valid_args
+    def get(self):
+        '''
+        '''
+        try:
+            args_data = request.args.to_dict()
+
+            print(args_data)
+
+            student_id = args_data.get('studentid')
+
+            collection1 = 'common_test_student'
+            # collection2 = 'common_test_master'
+
+            columns = {'_id': 0, "test_id": 1, "is_complete": 1}
+            queries1 = {'student_id': student_id}
+            query_data1 = FlaskMongo.find(collection1, columns, queries1)
+
+            # queries2 = {'id': student_id}
+            # query_data2 = FlaskMongo.find(collection2, columns, queries2)
+
+            if query_data1:
+                # query_data1 = query_data1[0]
+                print(f'query_data1: {query_data1}')
+
+                # query_data1 = query_data1[0]
+                # print(query_data1)
+
+                stats = {
+                    'total': len(query_data1),
+                    'complete': 0,
+                    'incomplete': 0,
+                    'test-ids': []
+                }
+
+                for qd in query_data1:
+                    if qd.get('is_complete'):
+                        stats['complete'] = stats['complete'] + 1
+                    stats['test-ids'].append(qd.get('test_id'))
+
+                stats['incomplete'] = stats['total'] - stats['complete']
+                
+
+                response = {
+                    "meta": self.meta,
+                    # "message": f"no data found for test id {student_id}",
+                    "status": "success",
+                    "stats": stats
+                }
+                return response, self.success_code, self.headers
+
+            else:
+                response = {
+                    "meta": self.meta,
+                    "message": f"no data found for student with id {student_id}",
+                    "status": "failure"
+                }
+                return response, self.no_data_code, self.headers
+
+        except Exception as e:
+            # raise e
+            response = {
+                "meta": self.meta,
+                "message": "unable to process request",
+                "status": "failure",
+                "reason": str(e)
+            }
+            return response, self.exception_code, self.headers

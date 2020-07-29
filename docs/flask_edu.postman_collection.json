@@ -516,6 +516,162 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Create New Room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222416\",\r\n    \"limit\": 10,\r\n    \"agenda\": \"Semester II\",\r\n    \"room_name\": \"Physics Test 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/create-room",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"create-room"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/create-room"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single / All Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/get-room?room=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"get-room"
+							],
+							"query": [
+								{
+									"key": "room",
+									"value": "all",
+									"disabled": true
+								},
+								{
+									"key": "room",
+									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
+								},
+								{
+									"key": "teacherid",
+									"value": "5f1c8e11677eb6114c222416"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/get-room?room=all&room&teacherid=5f1c8e11677eb6114c222416"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Room",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"limit\": 5,\r\n    \"agenda\": \"Semester III\",\r\n    \"room_name\": \"Physics Test 3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/mod-room?roomid=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"mod-room"
+							],
+							"query": [
+								{
+									"key": "roomid",
+									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
+								},
+								{
+									"key": "teacherid",
+									"value": "5f1c8e11677eb6114c222416"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/mod-room?roomid=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Rooms Enrolled",
+			"item": [
+				{
+					"name": "Create Room Enroll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222416\",\r\n    \"room_id\": \"086a8338-d10f-11ea-bf39-b42e998c02ed\",\r\n    \"student_id\": \"5f1c986faa7b778d609d6c3f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/create-room-enroll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"create-room-enroll"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/create-room-enroll"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Stats",
 			"item": [
 				{
@@ -578,82 +734,6 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/studentstats/get-test?studentid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Rooms",
-			"item": [
-				{
-					"name": "Create New Room",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222417\",\r\n    \"limit\": 10,\r\n    \"agenda\": \"Semester II\",\r\n    \"room_name\": \"Physics Test 2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/rooms/create-room",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"rooms",
-								"create-room"
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/rooms/create-room"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Single / All Room",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/rooms/get-room?room=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"rooms",
-								"get-room"
-							],
-							"query": [
-								{
-									"key": "room",
-									"value": "all",
-									"disabled": true
-								},
-								{
-									"key": "room",
-									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
-								},
-								{
-									"key": "teacherid",
-									"value": "5f1c8e11677eb6114c222416"
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/rooms/get-room?room=all&room&teacherid=5f1c8e11677eb6114c222416"
 					},
 					"response": []
 				}

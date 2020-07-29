@@ -9,17 +9,16 @@ from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
-from app.schema import TeacherUsers
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
-from utils.common_functions import get_uuid1
-from app.schema import Rooms
+from utils.common_functions import get_uuid1, format_api_error
+from app.schema import RoomsEnrolled
 
-rooms_data = Rooms()
+rooms_enrolled_data = RoomsEnrolled()
 
 # Class Definitions:
 
-class RoomsApi(Resource):
+class RoomsEnrolled(Resource):
 	'''
 	'''
 	def __init__(self):
@@ -89,7 +88,7 @@ class RoomsApi(Resource):
 		try:
 			post_data = request.get_json()
 
-			rooms_data.load(post_data)
+			rooms_enrolled_data.load(post_data)
 			print(post_data.keys())
 
 			# Check for already exising entry:
@@ -97,47 +96,60 @@ class RoomsApi(Resource):
 			db = c_app.config.get('MONGO_DATABASE')
 			collection = 'common_room_master'
 			collection2 = 'common_user_master'
+			collection3 = 'common_room_enroll_master'
+			
 			teacher_id = post_data.get("teacher_id")
-			room_name = post_data.get("room_name")
+			room_id = post_data.get("room_id")
+			student_id = post_data.get("student_id")
 
 			columns = {"_id": 0}
 			queries = {
-				"teacher_id": teacher_id, "room_name": room_name
+				"teacher_id": teacher_id, "room_id": room_id
 			}
 			queries2 = {
-				"_id": ObjectId(teacher_id)
+				"_id": ObjectId(student_id)
+			}
+			queries3 = {
+				"student_id": student_id, "teacher_id": teacher_id, "room_id": room_id
 			}
 			room_data = FlaskMongo.find(collection, columns, queries)
 			user_data = FlaskMongo.find(collection2, columns, queries2)
+			room_enrolled_data = FlaskMongo.find(collection3, columns, queries3)
 
 			print(post_data)
 			print(f'room_data: {room_data}')
 
+			if room_data == []:
+				response = {
+					"meta": self.meta,
+					"message": f"teacher with id {teacher_id} has not created room with id {room_id}",
+					"status": "failure",
+				}
+				return response, self.bad_code, self.headers
+
 			if user_data == []:
 				response = {
 					"meta": self.meta,
-					"message": f"teacher with id {teacher_id} does not exists",
+					"message": f"student with id {student_id} does not exists",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
 
-			if room_data != []:
+			if room_enrolled_data != []:
 				response = {
 					"meta": self.meta,
-					"message": f"room {room_name} is already created",
+					"message": f"student with id {student_id} already enrolled in room with id {room_id}",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
 
-			room_id = get_uuid1()
-			post_data["room_id"] = room_id
-			post_data["deleted"] = False
+			post_data["banned"] = False
 			post_data["created"] = datetime.now().isoformat()
-			FlaskMongo.insert(db, collection, post_data)
+			FlaskMongo.insert(db, collection3, post_data)
 
 			response = {
 				"meta": self.meta,
-				"message": f"new room with id {room_id} added successfully",
+				"message": f"student with id {student_id} added to room with id {room_id} successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers

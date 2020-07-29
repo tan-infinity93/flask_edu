@@ -4,10 +4,11 @@
 # Import Modules:
 
 from marshmallow import (
-	Schema, fields, validate, validates_schema, ValidationError
+	Schema, fields, validate, validates, validates_schema, ValidationError
 )
 from marshmallow.validate import OneOf
 from dateutil.parser import parse
+import bson
 
 # Schema Definitions:
 
@@ -126,6 +127,14 @@ class TestAttempt(Schema):
 	)
 	is_complete = fields.Boolean(required=False)
 
+	@validates('student_id')
+	def check_mongo_objectid(self, value):
+		'''
+		'''
+		is_valid = bson.objectid.ObjectId.is_valid(value)
+		if not is_valid:
+			raise ValidationError('please check student_id, is invalid')
+
 class Rooms(Schema):
 	'''
 	'''
@@ -135,3 +144,29 @@ class Rooms(Schema):
 	agenda = fields.Str(required=True)
 	room_name = fields.Str(required=True)
 	deleted = fields.Boolean(required=False)
+
+	@validates('teacher_id')
+	def check_mongo_objectid(self, value):
+		'''
+		'''
+		is_valid = bson.objectid.ObjectId.is_valid(value)
+		if not is_valid:
+			raise ValidationError('please check teacher_id, is invalid')
+
+class RoomsEnrolled(Schema):
+	'''
+	'''
+	teacher_id = fields.Str(required=True)
+	room_id = fields.Str(required=False)
+	student_id = fields.Str(required=True)
+	reason = fields.Str(required=False)
+	banned = fields.Boolean(required=False)
+	deleted = fields.Boolean(required=False)
+
+	@validates('student_id')
+	def check_mongo_objectid(self, value):
+		'''
+		'''
+		is_valid = bson.objectid.ObjectId.is_valid(value)
+		if not is_valid:
+			raise ValidationError('please check student_id, is invalid')
