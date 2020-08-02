@@ -3,6 +3,7 @@
 
 # Import Modules:
 
+from datetime import datetime
 from marshmallow import (
 	Schema, fields, validate, validates, validates_schema, ValidationError
 )
@@ -32,7 +33,7 @@ class TeacherUsers(Schema):
 		]
 	)
 	phone_no = fields.Str(required=True)
-	email_id = fields.Str(required=True)
+	email_id = fields.Email(required=True)
 	username = fields.Str(required=True)
 	password = fields.Str(required=True)
 	no_free_trial = fields.Integer(required=False, strict=True)
@@ -52,21 +53,22 @@ class StudentUsers(Schema):
 class TestDetails(Schema):
 	'''
 	'''
-	customerid = fields.Str(required=True)
-	testid = fields.Str(required=False)
-	details = fields.Str(required=True)
+	customerid = fields.Str(required=True, validate=[validate.Length(min=24)])
+	testid = fields.Str(required=False, validate=[validate.Length(min=32)])
+	details = fields.Str(required=True, validate=[validate.Length(min=10)])
 	schedule = fields.DateTime(required=True)
-	duration = fields.Float(required=True)
-	created = fields.DateTime(required=True)
+	duration = fields.Float(required=True, validate=[validate.Range(min=0.5, max=3.0)])
+	# created = fields.DateTime(required=True)
 	start_time = fields.DateTime(required=True)
 	end_time = fields.DateTime(required=True)
-	no_mandatory_questions = fields.Integer(required=True, strict=True)
+	no_mandatory_questions = fields.Integer(required=True, strict=True, validate=[validate.Range(min=1, max=10)])
 
 class QuestionAnswer(Schema):
 	'''
+		Issue: validator not working in nested
 	'''
 	_id = fields.Str(required=False)
-	question = fields.Str(required=True)
+	question = fields.Str(required=True, validate=[validate.Length(min=3)])
 	options = fields.List(
 		fields.Str(),
 		required=False,
@@ -74,7 +76,7 @@ class QuestionAnswer(Schema):
 			validate.Length(min=4), validate.Length(max=4)
 		]
 	)
-	answer = fields.Str(required=True)
+	answer = fields.Str(required=True, validate=[validate.Length(min=1)])
 	is_correct = fields.Boolean(required=False)
 
 class TestQuestionDetails(TestDetails):
@@ -99,20 +101,32 @@ class TestQuestionDetails(TestDetails):
 		
 		schedule_time = data.get('schedule')
 		# schedule_time = parse(schedule_time)
+		current_time = datetime.now()
+		start_time = data.get('start_time')
 		end_time = data.get('end_time')
 		# end_time = parse(end_time)
 		duration = data.get('duration')
 		duration = duration * 60
 
-		if schedule_time > end_time:
+		if schedule_time < current_time:
+			raise ValidationError('test cannot be created for previous datetime')
+
+		elif schedule_time > end_time:
 			print(end_time - schedule_time)
 			raise ValidationError('end time cannot be less than scheduled time')
+
+		elif start_time < schedule_time:
+			error = {'time error': 'start time cannot be less than scheduled time'}
+			raise ValidationError(error)
+
 		elif end_time > schedule_time:
-			time_delta = (end_time - schedule_time).total_seconds()/60
-			print(time_delta)
+			time_delta = (end_time - start_time).total_seconds()/60
+			print(f'time_delta: {time_delta}')
 			print(type(time_delta))
+			print(f'duration: {duration}')
 			if duration < (time_delta):
-				raise ValidationError('duration and time delta do not match')
+				error = {'difference': 'duration and time delta do not match, should be equal'}
+				raise ValidationError(error)
 
 class TestAttempt(Schema):
 	'''
@@ -133,7 +147,8 @@ class TestAttempt(Schema):
 		'''
 		is_valid = bson.objectid.ObjectId.is_valid(value)
 		if not is_valid:
-			raise ValidationError('please check student_id, is invalid')
+			error = {'id error': 'please check student_id, is invalid'}
+			raise ValidationError(error)
 
 class Rooms(Schema):
 	'''

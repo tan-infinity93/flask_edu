@@ -141,41 +141,62 @@ class TestQuestionDetails(Resource):
 			db = c_app.config.get('MONGO_DATABASE')
 			collection1 = 'common_test_master'
 			collection2 = 'common_question_master'
+			collection3 = 'common_user_master'
 
-			# print(post_data)
+			customer_id = post_data.get('customerid')
+			columns = {"_id": 0, "deleted": 0}
+			queries = {"_id": ObjectId(customer_id)}
+			user_data = FlaskMongo.find(collection3, columns, queries)
 
-			testid = str(uuid.uuid1())#.replace("-", "")
-
-			data1 = {
-				"id": testid,
-				"details": post_data.get("details"),
-				"schedule": post_data.get("schedule"),
-				"duration": post_data.get("duration"),
-				"start_time": post_data.get("start_time"),
-				"end_time": post_data.get("end_time"),
-				"no_mandatory_questions": post_data.get("no_mandatory_questions")
-			}
-			FlaskMongo.insert(db, collection1, data1)
-			
-			for qna in post_data.get("qna"):
-				data2 = {
-					"customerid": post_data.get("customerid"),
-					"testid": testid,
-					"question": qna.get("question"),
-					"option1": qna.get("options")[0],
-					"option2": qna.get("options")[1],
-					"option3": qna.get("options")[2],
-					"option4": qna.get("options")[3],
-					"answer": qna.get("answer")
+			if not user_data:
+				response = {
+					"meta": self.meta,
+					"message": f"user with id {customer_id} does not exists",
+					"status": "failure"
 				}
-				FlaskMongo.insert(db, collection2, data2)
+				return response, self.bad_code, self.headers
 
-			response = {
-				"meta": self.meta,
-				"message": f"new test with id {testid} created successfully",
-				"status": "success"
-			}
-			return response, self.success_code, self.headers
+			elif user_data[0].get("account_type") != 'teacher':
+				response = {
+					"meta": self.meta,
+					"message": f"user with id {customer_id} is not allowed to create tests",
+					"status": "failure"
+				}
+				return response, self.process_error_code, self.headers
+
+			else:
+				testid = str(uuid.uuid1()).replace("-", "")
+
+				data1 = {
+					"id": testid,
+					"details": post_data.get("details"),
+					"schedule": post_data.get("schedule"),
+					"duration": post_data.get("duration"),
+					"start_time": post_data.get("start_time"),
+					"end_time": post_data.get("end_time"),
+					"no_mandatory_questions": post_data.get("no_mandatory_questions")
+				}
+				FlaskMongo.insert(db, collection1, data1)
+				
+				for qna in post_data.get("qna"):
+					data2 = {
+						"customerid": post_data.get("customerid"),
+						"testid": testid,
+						"question": qna.get("question"),
+						"option1": qna.get("options")[0],
+						"option2": qna.get("options")[1],
+						"option3": qna.get("options")[2],
+						"option4": qna.get("options")[3],
+						"answer": qna.get("answer")
+					}
+					FlaskMongo.insert(db, collection2, data2)
+
+				response = {
+					"meta": self.meta,
+					"message": f"new test with id {testid} created successfully",
+					"status": "success"
+				}
+				return response, self.success_code, self.headers
 
 		except ValidationError as e:
 			response = {

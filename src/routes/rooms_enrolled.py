@@ -43,22 +43,29 @@ class RoomsEnrolled(Resource):
 			args_data = request.args.to_dict()
 			print(args_data)
 
-			room_id = args_data.get("room", "all")
+			room_id = args_data.get("roomid", "all")
 			teacher_id = args_data.get("teacherid")
 
 			if room_id == "all":
-				queries = {"deleted": False, "teacher_id": teacher_id}
+				if teacher_id == "all":
+					queries = {"deleted": 0}
+				else:
+					queries = {"deleted": 0, "teacher_id": teacher_id}
 				columns = {"_id": 0, "deleted": 0}
-				collection = 'common_room_master'
+				collection = 'common_room_enroll_master'
 				query_data = FlaskMongo.find(collection, columns, queries)
 			
 			else:
-				queries = {"deleted": False, "teacher_id": teacher_id, "room_id": room_id}
+				if teacher_id == "all":
+					queries = {"deleted": 0, "room_id": room_id}
+				else:
+					queries = {"deleted": 0, "teacher_id": teacher_id, "room_id": room_id}
 				columns = {"_id": 0, "deleted": 0}
-				collection = 'common_room_master'
+				collection = 'common_room_enroll_master'
 				query_data = FlaskMongo.find(collection, columns, queries)
 				if query_data:
-					query_data = query_data[0]
+					if len(query_data) == 1:
+						query_data = query_data[0]
 				else:
 					query_data = {}
 
@@ -66,7 +73,7 @@ class RoomsEnrolled(Resource):
 
 			response = {
 				"meta": self.meta,
-				"rooms": query_data
+				"rooms_enrollment": query_data
 			}
 			return response, self.success_code, self.headers
 
@@ -144,6 +151,7 @@ class RoomsEnrolled(Resource):
 				return response, self.bad_code, self.headers
 
 			post_data["banned"] = False
+			post_data["deleted"] = 0
 			post_data["created"] = datetime.now().isoformat()
 			FlaskMongo.insert(db, collection3, post_data)
 
@@ -186,43 +194,32 @@ class RoomsEnrolled(Resource):
 			post_data = request.get_json()
 			print(args_data)
 			print(post_data)
-			room_id = args_data.get("roomid")
-
-			rooms_data.load(post_data, partial=True)
+			
+			args_data.update(post_data)
+			rooms_enrolled_data.load(post_data, partial=True)
 
 			######
 
 			db = c_app.config.get('MONGO_DATABASE')
-			collection = 'common_room_master'
-			collection2 = 'common_user_master'
+			collection = 'common_room_enroll_master'
+			
+			room_id = args_data.get("roomid")
 			teacher_id = args_data.get("teacherid")
-			# room_name = post_data.get("room_name")
+			student_id = post_data.get("student_id")
 
 			columns = {"_id": 0}
 			queries = {
 				"teacher_id": teacher_id, "room_id": room_id
 			}
-			queries2 = {
-				"_id": ObjectId(teacher_id)
-			}
-			room_data = FlaskMongo.find(collection, columns, queries)
-			user_data = FlaskMongo.find(collection2, columns, queries2)
+			room_enrolled_data = FlaskMongo.find(collection, columns, queries)
 
-			print(post_data)
-			print(f'room_data: {room_data}')
+			# print(post_data)
+			print(f'room_data: {room_enrolled_data}')
 
-			if user_data == []:
+			if room_enrolled_data == []:
 				response = {
 					"meta": self.meta,
-					"message": f"teacher with id {teacher_id} does not exists",
-					"status": "failure",
-				}
-				return response, self.bad_code, self.headers
-
-			if room_data == []:
-				response = {
-					"meta": self.meta,
-					"message": f"room with id {room_id} does not exists",
+					"message": f"rooms enrollment for id {room_id} does not exists",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
@@ -231,14 +228,14 @@ class RoomsEnrolled(Resource):
 
 			updates = post_data
 			queries = {
-				"room_id": room_id
+				"room_id": room_id, "student_id": student_id
 			}
-			collection = 'common_room_master'
+			collection = 'common_room_enroll_master'
 			FlaskMongo.update(collection, updates, queries)
 
 			response = {
 				"meta": self.meta,
-				"message": f"room with id {room_id} updated successfully",
+				"message": f"rooms enrollment with room id {room_id} updated successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers
