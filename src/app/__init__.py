@@ -46,10 +46,12 @@ def create_app(config_name):
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/get-user', methods=['GET'], endpoint='get_tuser')
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/add-user', methods=['POST'], endpoint='add_tuser')
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/mod-user', methods=['PUT'], endpoint='mod_tuser')
+	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/del-user', methods=['DELETE'], endpoint='del_tuser')
 
 	api.add_resource(StudentUsers, '/edu/v1/users/student/get-user', methods=['GET'], endpoint='get_suser')
 	api.add_resource(StudentUsers, '/edu/v1/users/student/add-user', methods=['POST'], endpoint='add_suser')
 	api.add_resource(StudentUsers, '/edu/v1/users/student/mod-user', methods=['PUT'], endpoint='mod_suser')
+	api.add_resource(TeacherUsers, '/edu/v1/users/student/del-user', methods=['DELETE'], endpoint='del_suser')
 
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/get-test', methods=['GET'], endpoint='get_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/create-test', methods=['POST'], endpoint='add_test')

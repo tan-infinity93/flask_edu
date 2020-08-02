@@ -44,6 +44,16 @@ class TeacherUsers(Schema):
 			OneOf([True, False])
 		]
 	)
+	userid = fields.Str(required=False)
+
+	@validates('userid')
+	def check_mongo_objectid(self, value):
+		'''
+		'''
+		is_valid = bson.objectid.ObjectId.is_valid(value)
+		if not is_valid:
+			error = {'id error': 'please check userid, is invalid'}
+			raise ValidationError(error)
 
 class StudentUsers(Schema):
 	'''

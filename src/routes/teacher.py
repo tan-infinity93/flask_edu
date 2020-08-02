@@ -35,6 +35,7 @@ class TeacherUsers(Resource):
 		self.exception_code = 500
 		self.account_type = "teacher"
 
+	@is_valid_args
 	def get(self):
 		'''
 		'''
@@ -89,14 +90,6 @@ class TeacherUsers(Resource):
 			name = post_data.get("name")
 			# mobile = post_data.get("mobile")
 			print(post_data.keys())
-
-			# if not post_data:
-			# 	response = {
-			# 		"meta": self.meta,
-			# 		"message": "unable to process request",
-			# 		"status": "failure",
-			# 	}
-			# 	return response, self.bad_code, self.headers
 
 			# Check for already exising entry:
 
@@ -217,6 +210,7 @@ class TeacherUsers(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_args
 	def delete(self):
 		'''
 		'''
@@ -224,32 +218,62 @@ class TeacherUsers(Resource):
 			args_data = request.args.to_dict()
 			post_data = request.get_json()
 			print(args_data)
-			print(post_data)
-			user = args_data.get("user")
+			# print(post_data)
+
+			teacherusers_data.load(args_data, partial=True)
+			userid = args_data.get("userid")
 			# user = args_data.get("user", "all")
 			# print(f'condition: {(not user or post_data)}')
 
-			if not user:
+			columns = {"_id": 0}
+			queries = {"_id": ObjectId(userid)}
+			collection = "common_user_master"
+
+			user_data = FlaskMongo.find(collection, columns, queries)
+			print(f'user_data: {user_data}')
+
+			if not user_data:
 				response = {
 					"meta": self.meta,
-					"message": "unable to process request",
+					"message": f"user with id {userid} does not exists",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
+			
+			elif user_data:
+				user_data = user_data[0]
+				if user_data.get('deleted') == 1:
+					response = {
+						"meta": self.meta,
+						"message": f"user with id {userid} does not exists",
+						"status": "failure",
+					}
+					return response, self.bad_code, self.headers
 
-			updates = {"delete": 0}
+			updates = {"deleted": 1}
 			queries = {
-				"_id": ObjectId(user)
+				"_id": ObjectId(userid)
 			}
 			collection = 'common_user_master'
 			FlaskMongo.update(collection, updates, queries)
 
 			response = {
 				"meta": self.meta,
-				"message": f"user {user} updated successfully",
+				"message": f"user with id {userid} deleted successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers
+
+		except ValidationError as e:
+			# raise e
+			print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"errors": format_api_error(e.messages)
+			}
+			return response, self.bad_code, self.headers
 
 		except Exception as e:
 			# raise e

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "000fb114-25b7-4df7-9650-20308480b651",
+		"_postman_id": "9dadf2cb-dfad-4a3f-a16c-81abb37650fc",
 		"name": "flask_edu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -42,12 +42,12 @@
 					"response": []
 				},
 				{
-					"name": "Get Existing Teacher USer",
+					"name": "Get Existing Teacher User",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=all",
+							"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26c66eafeac122d47af6a9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -63,15 +63,15 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "all"
-								},
-								{
-									"key": "user",
-									"value": "5f1c8e11677eb6114c222416",
+									"value": "all",
 									"disabled": true
 								},
 								{
-									"key": null,
+									"key": "user",
+									"value": "5f26c66eafeac122d47af6a9"
+								},
+								{
+									"key": "user",
 									"value": "5f1c8e11677eb6114c222416m",
 									"disabled": true
 								}
@@ -121,6 +121,36 @@
 					"response": []
 				},
 				{
+					"name": "Delete Existing Teacher User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/users/teacher/del-user?userid=5f26c66eafeac122d47af6a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"users",
+								"teacher",
+								"del-user"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "5f26c66eafeac122d47af6a9"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/users/teacher/get-user?userid=5f26b443ab30202478b59ffe"
+					},
+					"response": []
+				},
+				{
 					"name": "Create New Student User",
 					"request": {
 						"method": "POST",
@@ -159,7 +189,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f1c986faa7b778d609d6c3f",
+							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26c99672f1100cbc7a51bc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,7 +205,7 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "5f1c986faa7b778d609d6c3f"
+									"value": "5f26c99672f1100cbc7a51bc"
 								},
 								{
 									"key": "user",
@@ -224,6 +254,36 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/users/student/mod-user?user=5f1c986faa7b778d609d6c3f"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Student User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"users",
+								"student",
+								"del-user"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "5f26c99672f1100cbc7a51bc"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc"
 					},
 					"response": []
 				}
