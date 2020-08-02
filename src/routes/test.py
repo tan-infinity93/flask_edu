@@ -124,7 +124,7 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
-	# @is_valid_json
+	@is_valid_json
 	def post(self):
 		"""
 		"""
@@ -208,7 +208,7 @@ class TestQuestionDetails(Resource):
 			return response, self.bad_code, self.headers
 		
 		except Exception as e:
-			raise e
+			# raise e
 			print(e)
 			response = {
 				"meta": self.meta,
@@ -218,8 +218,11 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_args
+	@is_valid_json
 	def put(self):
 		'''
+			Issue: check time validators, works in post request
 		'''
 		try:
 			args_data = request.args.to_dict()
@@ -228,19 +231,12 @@ class TestQuestionDetails(Resource):
 			print(post_data)
 			print(args_data)
 
-			if not post_data or not args_data:
-				response = {
-					"meta": self.meta,
-					"message": "unable to process request for empty json",
-					"status": "failure",
-				}
-				return response, self.bad_code, self.headers
-
+			args_data.update(post_data)
 			testquestion_data.load(post_data, partial=True)
 
-			testid = args_data.get("testid")
+			test_id = args_data.get("test_id")
 			queries = {
-				'id': testid
+				'id': test_id
 			}
 			columns = {
 				'_id': 0
@@ -251,7 +247,7 @@ class TestQuestionDetails(Resource):
 			if not query_data:
 				response = {
 					"meta": self.meta,
-					"message": f"test with id {testid} does not exists",
+					"message": f"test with id {test_id} does not exists",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
@@ -262,7 +258,7 @@ class TestQuestionDetails(Resource):
 			collection2 = 'common_question_master'
 
 			data1 = {
-				"id": testid,
+				"id": test_id,
 				"details": post_data.get("details"),
 				"schedule": post_data.get("schedule"),
 				"duration": post_data.get("duration"),
@@ -270,16 +266,16 @@ class TestQuestionDetails(Resource):
 				"end_time": post_data.get("end_time"),
 				"no_mandatory_questions": post_data.get("no_mandatory_questions")
 			}
-			updates1 = post_data
+			updates1 = data1
 			queries1 = {
-				"id": testid
+				"id": test_id
 			}
 			FlaskMongo.update(collection1, updates1, queries1)
 			
 			for qna in post_data.get("qna"):
 				data2 = {
 					"customerid": post_data.get("customerid"),
-					"testid": testid,
+					"testid": test_id,
 					"question": qna.get("question"),
 					"option1": qna.get("options")[0],
 					"option2": qna.get("options")[1],
@@ -289,14 +285,14 @@ class TestQuestionDetails(Resource):
 				}
 				updates2 = data2
 				queries2 = {
-					"_id": ObjectId(qna.get("_id")), "testid": testid, "customerid": data2.get("customerid")
+					"_id": ObjectId(qna.get("_id")), "testid": test_id, "customerid": data2.get("customerid")
 				}
 				FlaskMongo.update(collection2, updates2, queries2)
 			####
 
 			response = {
 				"meta": self.meta,
-				"message": f"test with id {testid} updated successfully",
+				"message": f"test with id {test_id} updated successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers
@@ -311,4 +307,12 @@ class TestQuestionDetails(Resource):
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
-			raise e
+			# raise e
+			print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": str(e)
+			}
+			return response, self.exception_code, self.headers

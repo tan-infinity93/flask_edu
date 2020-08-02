@@ -68,9 +68,11 @@ def create_app(config_name):
 	api.add_resource(RoomsApi, '/edu/v1/rooms/create-room', methods=['POST'], endpoint='add_room')
 	api.add_resource(RoomsApi, '/edu/v1/rooms/get-room', methods=['GET'], endpoint='get_room')
 	api.add_resource(RoomsApi, '/edu/v1/rooms/mod-room', methods=['PUT'], endpoint='mod_room')
+	api.add_resource(RoomsApi, '/edu/v1/rooms/del-room', methods=['DELETE'], endpoint='del_room')
 
 	api.add_resource(RoomsEnrolled, '/edu/v1/rooms/create-room-enroll', methods=['POST'], endpoint='add_room_enroll')
 	api.add_resource(RoomsEnrolled, '/edu/v1/rooms/get-room-enroll', methods=['GET'], endpoint='get_room_enroll')
 	api.add_resource(RoomsEnrolled, '/edu/v1/rooms/mod-room-enroll', methods=['PUT'], endpoint='mod_room_enroll')
+	api.add_resource(RoomsEnrolled, '/edu/v1/rooms/del-room-enroll', methods=['DELETE'], endpoint='del_room_enroll')
 
 	return app

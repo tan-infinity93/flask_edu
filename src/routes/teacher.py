@@ -200,6 +200,17 @@ class TeacherUsers(Resource):
 			}
 			return response, self.success_code, self.headers
 
+		except ValidationError as e:
+			# raise e
+			# print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"errors": format_api_error(e.messages)
+			}
+			return response, self.bad_code, self.headers
+
 		except Exception as e:
 			# raise e
 			response = {

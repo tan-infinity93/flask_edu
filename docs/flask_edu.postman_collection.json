@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9dadf2cb-dfad-4a3f-a16c-81abb37650fc",
+		"_postman_id": "4e94e73f-720d-4b90-a9c8-252ace1379ad",
 		"name": "flask_edu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -47,7 +47,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26c66eafeac122d47af6a9",
+							"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26d3e1188353aca57d6c76",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -68,7 +68,7 @@
 								},
 								{
 									"key": "user",
-									"value": "5f26c66eafeac122d47af6a9"
+									"value": "5f26d3e1188353aca57d6c76"
 								},
 								{
 									"key": "user",
@@ -96,7 +96,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f1c8e11677eb6114c222416",
+							"raw": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f26d3e1188353aca57d6c76",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -112,7 +112,7 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "5f1c8e11677eb6114c222416"
+									"value": "5f26d3e1188353aca57d6c76"
 								}
 							]
 						},
@@ -189,7 +189,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26c99672f1100cbc7a51bc",
+							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26d41a188353aca57d6c77",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -205,7 +205,7 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "5f26c99672f1100cbc7a51bc"
+									"value": "5f26d41a188353aca57d6c77"
 								},
 								{
 									"key": "user",
@@ -338,7 +338,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"details\": \"New Maths Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"end_time\": \"2020-07-31T14:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 2.0\r\n}",
+							"raw": "{\r\n    \"details\": \"New Maths Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-03T12:00:00\",\r\n    \"start_time\": \"2020-08-03T12:00:00\",\r\n    \"end_time\": \"2020-08-03T14:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"duration\": 2.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -369,7 +369,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=27c9eba2-d050-11ea-83f2-b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=a0859b3cd4eb11ea99d7b42e998c02ed",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -389,12 +389,12 @@
 								},
 								{
 									"key": "testid",
-									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
-									"disabled": true
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed"
 								},
 								{
 									"key": "testid",
-									"value": "27c9eba2-d050-11ea-83f2-b42e998c02ed"
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed",
+									"disabled": true
 								}
 							]
 						},
@@ -409,7 +409,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"end_time\": \"2020-07-31T12:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f1c8e11677eb6114c222416\",\r\n    \"no_mandatory_questions\": 10,\r\n    \"schedule\": \"2020-07-31T12:00:00\",\r\n    \"created\": \"2020-07-31T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1d9505d1af906e23a18dba\",\r\n            \"question\": \"2+3\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"d\"\r\n        }\r\n    ],\r\n    \"start_time\": \"2020-07-31T12:00:00\",\r\n    \"duration\": 3.0\r\n}",
+							"raw": "{\r\n    \"start_time\": \"2020-08-04T13:00:00\",\r\n    \"end_time\": \"2020-08-04T14:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-04T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f2701e2a5e81ca655ed620a\",\r\n            \"question\": \"2+3\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"d\"\r\n        }\r\n    ],\r\n    \"duration\": 3.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -417,7 +417,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/mod-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/mod-test?test_id=a0859b3cd4eb11ea99d7b42e998c02ed",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -431,8 +431,8 @@
 							],
 							"query": [
 								{
-									"key": "testid",
-									"value": "72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+									"key": "test_id",
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed"
 								}
 							]
 						},
@@ -585,7 +585,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222416\",\r\n    \"limit\": 10,\r\n    \"agenda\": \"Semester II\",\r\n    \"room_name\": \"Physics Test 2\"\r\n}",
+							"raw": "{\r\n    \"teacher_id\": \"5f26d3e1188353aca57d6c76\",\r\n    \"limit\": 10,\r\n    \"agenda\": \"Semester II\",\r\n    \"room_name\": \"Physics Test 2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -616,7 +616,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/rooms/get-room?room=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
+							"raw": "http://localhost:5000/edu/v1/rooms/get-room?room_id=all&teacher_id=5f26d3e1188353aca57d6c76",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -630,17 +630,17 @@
 							],
 							"query": [
 								{
-									"key": "room",
-									"value": "all",
+									"key": "room_id",
+									"value": "all"
+								},
+								{
+									"key": "room_id",
+									"value": "4355cc88-d4d3-11ea-a8a1-b42e998c02ed",
 									"disabled": true
 								},
 								{
-									"key": "room",
-									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
-								},
-								{
-									"key": "teacherid",
-									"value": "5f1c8e11677eb6114c222416"
+									"key": "teacher_id",
+									"value": "5f26d3e1188353aca57d6c76"
 								}
 							]
 						},
@@ -655,7 +655,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"limit\": 5,\r\n    \"agenda\": \"Semester III\",\r\n    \"room_name\": \"Physics Test 3\"\r\n}",
+							"raw": "{\r\n    \"limit\": 5,\r\n    \"agenda\": \"Semester III\",\r\n    \"room_name\": \"Physics Test 3\",\r\n    \"deleted\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -663,7 +663,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/rooms/mod-room?roomid=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416",
+							"raw": "http://localhost:5000/edu/v1/rooms/mod-room?roomid=67485b26-d4d6-11ea-af5d-b42e998c02ed&teacherid=5f26d3e1188353aca57d6c76",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -678,15 +678,49 @@
 							"query": [
 								{
 									"key": "roomid",
-									"value": "f2a3195c-d10e-11ea-b4a6-b42e998c02ed"
+									"value": "67485b26-d4d6-11ea-af5d-b42e998c02ed"
 								},
 								{
 									"key": "teacherid",
-									"value": "5f1c8e11677eb6114c222416"
+									"value": "5f26d3e1188353aca57d6c76"
 								}
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/rooms/mod-room?roomid=f2a3195c-d10e-11ea-b4a6-b42e998c02ed&teacherid=5f1c8e11677eb6114c222416"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Room",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/del-room?room_id=67485b26-d4d6-11ea-af5d-b42e998c02ed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"del-room"
+							],
+							"query": [
+								{
+									"key": "room_id",
+									"value": "67485b26-d4d6-11ea-af5d-b42e998c02ed"
+								},
+								{
+									"key": "teacher_id",
+									"value": "5f26d3e1188353aca57d6c76",
+									"disabled": true
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/get-room?room_id=4355cc88-d4d3-11ea-a8a1-b42e998c02ed"
 					},
 					"response": []
 				}
@@ -703,7 +737,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"teacher_id\": \"5f1c8e11677eb6114c222416\",\r\n    \"room_id\": \"086a8338-d10f-11ea-bf39-b42e998c02ed\",\r\n    \"student_id\": \"5f1c986faa7b778d609d6c3f\"\r\n}",
+							"raw": "{\r\n    \"teacher_id\": \"5f26d3e1188353aca57d6c76\",\r\n    \"room_id\": \"4355cc88-d4d3-11ea-a8a1-b42e998c02ed\",\r\n    \"student_id\": \"5f26d41a188353aca57d6c77\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -725,6 +759,115 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/rooms/create-room-enroll"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Rooms Enroll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/get-room-enroll?room_id=all&teacher_id=5f26d3e1188353aca57d6c76",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"get-room-enroll"
+							],
+							"query": [
+								{
+									"key": "room_id",
+									"value": "all"
+								},
+								{
+									"key": "room_id",
+									"value": "4355cc88-d4d3-11ea-a8a1-b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "teacher_id",
+									"value": "5f26d3e1188353aca57d6c76"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/get-room-enroll?room_id=all&teacher_id=5f26d3e1188353aca57d6c76"
+					},
+					"response": []
+				},
+				{
+					"name": "Mod Existing Rooms Enrollment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/mod-room-enroll?room_id=4355cc88-d4d3-11ea-a8a1-b42e998c02ed&student_id=5f26d41a188353aca57d6c77",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"mod-room-enroll"
+							],
+							"query": [
+								{
+									"key": "teacher_id",
+									"value": "5f26d3e1188353aca57d6c76",
+									"disabled": true
+								},
+								{
+									"key": "room_id",
+									"value": "4355cc88-d4d3-11ea-a8a1-b42e998c02ed"
+								},
+								{
+									"key": "student_id",
+									"value": "5f26d41a188353aca57d6c77"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/mod-room-enroll?teacher_id=5f26d3e1188353aca57d6c76&room_id=4355cc88-d4d3-11ea-a8a1-b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Rooms Enrollment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/rooms/del-room-enroll?room_id=4355cc88-d4d3-11ea-a8a1-b42e998c02ed&student_id=5f26d41a188353aca57d6c77",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"rooms",
+								"del-room-enroll"
+							],
+							"query": [
+								{
+									"key": "room_id",
+									"value": "4355cc88-d4d3-11ea-a8a1-b42e998c02ed"
+								},
+								{
+									"key": "student_id",
+									"value": "5f26d41a188353aca57d6c77"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/rooms/del-room-enroll?room_id=4355cc88-d4d3-11ea-a8a1-b42e998c02ed&student_id=5f26d41a188353aca57d6c77"
 					},
 					"response": []
 				}

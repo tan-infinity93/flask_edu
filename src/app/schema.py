@@ -119,7 +119,7 @@ class TestQuestionDetails(TestDetails):
 		duration = duration * 60
 
 		if schedule_time < current_time:
-			raise ValidationError('test cannot be created for previous datetime')
+			raise ValidationError('test cannot be created/modified for previous datetime')
 
 		elif schedule_time > end_time:
 			print(end_time - schedule_time)

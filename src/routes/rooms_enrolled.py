@@ -43,8 +43,8 @@ class RoomsEnrolled(Resource):
 			args_data = request.args.to_dict()
 			print(args_data)
 
-			room_id = args_data.get("roomid", "all")
-			teacher_id = args_data.get("teacherid")
+			room_id = args_data.get("room_id", "all")
+			teacher_id = args_data.get("teacher_id")
 
 			if room_id == "all":
 				if teacher_id == "all":
@@ -150,7 +150,7 @@ class RoomsEnrolled(Resource):
 				}
 				return response, self.bad_code, self.headers
 
-			post_data["banned"] = False
+			post_data["banned"] = 0
 			post_data["deleted"] = 0
 			post_data["created"] = datetime.now().isoformat()
 			FlaskMongo.insert(db, collection3, post_data)
@@ -203,13 +203,13 @@ class RoomsEnrolled(Resource):
 			db = c_app.config.get('MONGO_DATABASE')
 			collection = 'common_room_enroll_master'
 			
-			room_id = args_data.get("roomid")
-			teacher_id = args_data.get("teacherid")
+			room_id = args_data.get("room_id")
+			teacher_id = args_data.get("teacher_id")
 			student_id = post_data.get("student_id")
 
 			columns = {"_id": 0}
 			queries = {
-				"teacher_id": teacher_id, "room_id": room_id
+				"student_id": student_id, "room_id": room_id
 			}
 			room_enrolled_data = FlaskMongo.find(collection, columns, queries)
 
@@ -258,28 +258,44 @@ class RoomsEnrolled(Resource):
 			post_data = request.get_json()
 			print(args_data)
 			print(post_data)
-			user = args_data.get("user")
-			# user = args_data.get("user", "all")
+			room_id = args_data.get("room_id")
+			student_id = args_data.get("student_id")
 			# print(f'condition: {(not user or post_data)}')
 
-			if not user:
+			columns = {"_id": 0}
+			updates = {}
+			queries = {
+				"room_id": room_id, "student_id": student_id
+			}
+			collection = 'common_room_enroll_master'
+			rooms_enrolled_data = FlaskMongo.find(collection, columns, queries)
+
+			if not rooms_enrolled_data:
 				response = {
 					"meta": self.meta,
-					"message": "unable to process request",
+					"message": f"no enrollment found for student id {student_id} in room id {room_id}",
 					"status": "failure",
 				}
 				return response, self.bad_code, self.headers
+			elif rooms_enrolled_data:
+				rooms_enrolled_data = rooms_enrolled_data[0]
+				if rooms_enrolled_data.get('deleted') == 1:
+					response = {
+						"meta": self.meta,
+						"message": f"no enrollment found for student id {student_id} in room id {room_id}",
+						"status": "failure",
+					}
+					return response, self.bad_code, self.headers
 
-			updates = {"delete": 0}
+			updates = {"deleted": 1}
 			queries = {
-				"_id": ObjectId(user)
+				"room_id": room_id, "student_id": student_id
 			}
-			collection = 'common_user_master'
 			FlaskMongo.update(collection, updates, queries)
 
 			response = {
 				"meta": self.meta,
-				"message": f"user {user} updated successfully",
+				"message": f"enrollment for student id {student_id} in room id {room_id} deleted successfully",
 				"status": "success"
 			}
 			return response, self.success_code, self.headers
