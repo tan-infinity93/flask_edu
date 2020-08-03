@@ -9,13 +9,306 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Create New Teacher User",
+					"name": "Teachers",
+					"item": [
+						{
+							"name": "Create New Teacher User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/teacher/add-user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"teacher",
+										"add-user"
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/add-user"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Existing Teacher User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26d3e1188353aca57d6c76",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"teacher",
+										"get-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "all",
+											"disabled": true
+										},
+										{
+											"key": "user",
+											"value": "5f26d3e1188353aca57d6c76"
+										},
+										{
+											"key": "user",
+											"value": "5f1c8e11677eb6114c222416m",
+											"disabled": true
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f1c8e11677eb6114c222416"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Existing Teacher User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"tc@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f26d3e1188353aca57d6c76",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"teacher",
+										"mod-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "5f26d3e1188353aca57d6c76"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f1c8e11677eb6114c222416"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Existing Teacher User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/teacher/del-user?userid=5f26c66eafeac122d47af6a9",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"teacher",
+										"del-user"
+									],
+									"query": [
+										{
+											"key": "userid",
+											"value": "5f26c66eafeac122d47af6a9"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/get-user?userid=5f26b443ab30202478b59ffe"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Students",
+					"item": [
+						{
+							"name": "Create New Student User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273672\",\r\n    \"username\": \"chins5\",\r\n    \"name\": \"chinmay karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/student/add-user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"student",
+										"add-user"
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/student/add-user"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Existing Student User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26d41a188353aca57d6c77",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"student",
+										"get-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "5f26d41a188353aca57d6c77"
+										},
+										{
+											"key": "user",
+											"value": "all",
+											"disabled": true
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/student/get-user?user=5f1c986faa7b778d609d6c3f"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Existing Student User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273672\",\r\n    \"username\": \"chins5\",\r\n    \"name\": \"chinmay karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"cs@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/student/mod-user?user=5f1c986faa7b778d609d6c3f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"student",
+										"mod-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "5f1c986faa7b778d609d6c3f"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/student/mod-user?user=5f1c986faa7b778d609d6c3f"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Existing Student User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"student",
+										"del-user"
+									],
+									"query": [
+										{
+											"key": "userid",
+											"value": "5f26c99672f1100cbc7a51bc"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Reset User Trial",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+							"raw": "{\r\n    \"userid\": \"5f26d3e1188353aca57d6c76s\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,7 +316,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/add-user",
+							"raw": "http://localhost:5000/edu/v1/users/reset-trial",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -33,257 +326,17 @@
 								"edu",
 								"v1",
 								"users",
-								"teacher",
-								"add-user"
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/teacher/add-user"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Existing Teacher User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26d3e1188353aca57d6c76",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"teacher",
-								"get-user"
+								"reset-trial"
 							],
 							"query": [
 								{
-									"key": "user",
-									"value": "all",
-									"disabled": true
-								},
-								{
-									"key": "user",
-									"value": "5f26d3e1188353aca57d6c76"
-								},
-								{
-									"key": "user",
-									"value": "5f1c8e11677eb6114c222416m",
+									"key": "no_free_trial",
+									"value": "10",
 									"disabled": true
 								}
 							]
 						},
-						"description": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f1c8e11677eb6114c222416"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Existing Teacher User",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"tc@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f26d3e1188353aca57d6c76",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"teacher",
-								"mod-user"
-							],
-							"query": [
-								{
-									"key": "user",
-									"value": "5f26d3e1188353aca57d6c76"
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f1c8e11677eb6114c222416"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Existing Teacher User",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/teacher/del-user?userid=5f26c66eafeac122d47af6a9",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"teacher",
-								"del-user"
-							],
-							"query": [
-								{
-									"key": "userid",
-									"value": "5f26c66eafeac122d47af6a9"
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/teacher/get-user?userid=5f26b443ab30202478b59ffe"
-					},
-					"response": []
-				},
-				{
-					"name": "Create New Student User",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"phone_no\": \"917045273672\",\r\n    \"username\": \"chins5\",\r\n    \"name\": \"chinmay karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/add-user",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"student",
-								"add-user"
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/student/add-user"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Existing Student User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26d41a188353aca57d6c77",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"student",
-								"get-user"
-							],
-							"query": [
-								{
-									"key": "user",
-									"value": "5f26d41a188353aca57d6c77"
-								},
-								{
-									"key": "user",
-									"value": "all",
-									"disabled": true
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/student/get-user?user=5f1c986faa7b778d609d6c3f"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Existing Student User",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"phone_no\": \"917045273672\",\r\n    \"username\": \"chins5\",\r\n    \"name\": \"chinmay karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"cs@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/mod-user?user=5f1c986faa7b778d609d6c3f",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"student",
-								"mod-user"
-							],
-							"query": [
-								{
-									"key": "user",
-									"value": "5f1c986faa7b778d609d6c3f"
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/student/mod-user?user=5f1c986faa7b778d609d6c3f"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Existing Student User",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"edu",
-								"v1",
-								"users",
-								"student",
-								"del-user"
-							],
-							"query": [
-								{
-									"key": "userid",
-									"value": "5f26c99672f1100cbc7a51bc"
-								}
-							]
-						},
-						"description": "http://localhost:5000/edu/v1/users/student/del-user?userid=5f26c99672f1100cbc7a51bc"
+						"description": "http://localhost:5000/edu/v1/users/reset-trial"
 					},
 					"response": []
 				}
@@ -338,7 +391,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"details\": \"New Maths Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-03T12:00:00\",\r\n    \"start_time\": \"2020-08-03T12:00:00\",\r\n    \"end_time\": \"2020-08-03T14:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"duration\": 2.0\r\n}",
+							"raw": "{\r\n    \"details\": \"New Sample Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-04T12:00:00\",\r\n    \"start_time\": \"2020-08-04T12:00:00\",\r\n    \"end_time\": \"2020-08-04T14:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"duration\": 2.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

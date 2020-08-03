@@ -31,6 +31,7 @@ def create_app(config_name):
 
 	from routes.welcome import Welcome
 	from routes.auth import Auth
+	from routes.subscription import ResetTrial
 	from routes.teacher import TeacherUsers
 	from routes.student import StudentUsers
 	from routes.test import TestQuestionDetails
@@ -42,6 +43,8 @@ def create_app(config_name):
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 
 	api.add_resource(Auth, '/edu/v1/api/generate-token', methods=['POST'], endpoint='generate_token')
+
+	api.add_resource(ResetTrial, '/edu/v1/users/reset-trial', methods=['POST'], endpoint='reset_trial')
 	
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/get-user', methods=['GET'], endpoint='get_tuser')
 	api.add_resource(TeacherUsers, '/edu/v1/users/teacher/add-user', methods=['POST'], endpoint='add_tuser')

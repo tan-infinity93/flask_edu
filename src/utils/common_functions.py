@@ -27,6 +27,10 @@ def format_api_error(error):
 	'''
 	try:
 		errors = {}
+		# print(error)
+		# print(type(error))
+
+		# if 'messages' in errors:
 		for k, v in error.items():
 			if isinstance(v, list):
 				errors[k] = v[0]

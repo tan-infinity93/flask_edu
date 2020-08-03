@@ -84,16 +84,9 @@ class TestQuestionDetails(Resource):
 				queries1 = {
 					"id": testid
 				}
-				columns1 = {
-					"_id": 0
-				}
-				queries2 = {
-					"testid": testid
-				}
-				columns2 = {
-					# "_id": 0, 
-					"customerid": 0, "testid": 0
-				}
+				columns1 = {"_id": 0}
+				queries2 = {"testid": testid}
+				columns2 = {"customerid": 0, "testid": 0}
 
 			
 				query_data1 = FlaskMongo.find(collection1, columns1, queries1)
@@ -164,6 +157,14 @@ class TestQuestionDetails(Resource):
 				}
 				return response, self.process_error_code, self.headers
 
+			elif user_data[0].get("no_free_trial") < 1:
+				response = {
+					"meta": self.meta,
+					"message": f"user with id {customer_id} has 0 trials left. Please renew subscription.",
+					"status": "failure"
+				}
+				return response, self.process_error_code, self.headers
+
 			else:
 				testid = str(uuid.uuid1()).replace("-", "")
 
@@ -190,6 +191,16 @@ class TestQuestionDetails(Resource):
 						"answer": qna.get("answer")
 					}
 					FlaskMongo.insert(db, collection2, data2)
+
+				no_free_trial = user_data[0].get("no_free_trial")
+				if no_free_trial > 0:
+					no_free_trial = no_free_trial - 1
+
+					queries = {"_id": ObjectId(customer_id)}
+					updates = {
+						"no_free_trial": no_free_trial
+					}
+					FlaskMongo.update(collection3, updates, queries)
 
 				response = {
 					"meta": self.meta,
