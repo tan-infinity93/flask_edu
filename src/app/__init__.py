@@ -18,9 +18,13 @@ def create_app(config_name):
 	# App Binding:
 
 	from bindings.flask_mongo import FlaskMongo
+	from bindings.flask_logger import FlaskLogger
 
 	mongo_app = FlaskMongo()
 	mongo_app.init_app(app)
+
+	log_app = FlaskLogger()
+	log_app.init_app(app)
 
 	api = Api(app, catch_all_404s=True)
 	# api = Api()
@@ -34,7 +38,7 @@ def create_app(config_name):
 	from routes.subscription import ResetTrial
 	from routes.teacher import TeacherUsers
 	from routes.student import StudentUsers
-	from routes.test import TestQuestionDetails
+	from routes.test import TestQuestionDetails, UnDeleteTest
 	from routes.testattempt import TestAttemptDetails, TestAttemptComplete
 	from routes.stats import TestScoresStats, StudentsStats
 	from routes.rooms import RoomsApi
@@ -42,7 +46,7 @@ def create_app(config_name):
 
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 
-	api.add_resource(Auth, '/edu/v1/api/generate-token', methods=['POST'], endpoint='generate_token')
+	api.add_resource(Auth, '/edu/v1/api/login', methods=['POST'], endpoint='generate_token')
 
 	api.add_resource(ResetTrial, '/edu/v1/users/reset-trial', methods=['POST'], endpoint='reset_trial')
 	
@@ -59,6 +63,9 @@ def create_app(config_name):
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/get-test', methods=['GET'], endpoint='get_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/create-test', methods=['POST'], endpoint='add_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/mod-test', methods=['PUT'], endpoint='mod_test')
+	api.add_resource(TestQuestionDetails, '/edu/v1/tests/del-test', methods=['DELETE'], endpoint='del_test')
+
+	api.add_resource(UnDeleteTest, '/edu/v1/tests/undo-test-delete', methods=['POST'], endpoint='undo_test')
 
 	api.add_resource(TestAttemptDetails, '/edu/v1/testattempts/create-test', methods=['POST'], endpoint='create_testa')
 	api.add_resource(TestAttemptDetails, '/edu/v1/testattempts/mod-test', methods=['PUT'], endpoint='mod_testa')

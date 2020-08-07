@@ -304,11 +304,20 @@
 				{
 					"name": "Reset User Trial",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjM5ZDAyZDY4MmQyYmZiZDVmMzk0In0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiJ9.IIoVnB8kQLvL5yISZ5ScBpcplP1wRK0g4OKQpv3oLyE",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userid\": \"5f26d3e1188353aca57d6c76s\"\r\n}",
+							"raw": "{\r\n    \"userid\": \"5f26d3e1188353aca57d6c76\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -361,7 +370,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/api/generate-token",
+							"raw": "http://localhost:5000/edu/v1/api/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -371,7 +380,7 @@
 								"edu",
 								"v1",
 								"api",
-								"generate-token"
+								"login"
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/api/generate-token"
@@ -459,10 +468,16 @@
 					"name": "Update Existing Test Data",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjM1M2UxY2U2NDczMWVhNWMxYWNmIn0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiIsInBob25lX25vIjoiOTE3MDQ1MjczNjcyIiwibmFtZSI6ImNoaW5tYXkga2FybW9rYXIiLCJpbnN0aXR1dGVfdHlwZSI6InNjaG9vbCIsImVtYWlsX2lkIjoidEBrLmNvbSIsImluc3RpdHV0ZV9uYW1lIjoiVGVzdCBPbmUiLCJhY2NvdW50X3R5cGUiOiJzdHVkZW50Iiwibm9fZnJlZV90cmlhbCI6MiwiaXNfYWN0aXZlIjp0cnVlLCJkZWxldGVkIjowLCJjcmVhdGVkIjoiMjAyMC0wOC0wMlQyMDoyNjoyNi43NjMyNzciLCJleHAiOjE1OTY5MTUxNjYuMDY0NTQ2fQ.P7TkdlNco6WXYbCAW10-KEMvsZHiQ2OfOoJHmnzBJfI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"start_time\": \"2020-08-04T13:00:00\",\r\n    \"end_time\": \"2020-08-04T14:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-04T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f2701e2a5e81ca655ed620a\",\r\n            \"question\": \"2+3\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"d\"\r\n        }\r\n    ],\r\n    \"duration\": 3.0\r\n}",
+							"raw": "{\r\n    \"start_time\": \"2020-08-09T13:00:00\",\r\n    \"end_time\": \"2020-08-09T14:00:00\",\r\n    \"details\": \"New Class Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-09T12:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f285d79cda98383cbd75cb5\",\r\n            \"question\": \"What is alpha?\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"d\"\r\n        }\r\n    ],\r\n    \"duration\": 3.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -470,7 +485,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/mod-test?test_id=a0859b3cd4eb11ea99d7b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/mod-test?test_id=cedab574d5ba11eaaff5b42e998c02ed",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -485,11 +500,97 @@
 							"query": [
 								{
 									"key": "test_id",
-									"value": "a0859b3cd4eb11ea99d7b42e998c02ed"
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "test_id",
+									"value": "cedab574d5ba11eaaff5b42e998c02ed"
 								}
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/tests/mod-test?testid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Test",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjI3OTNkNjkyOTNlYjMzMjQ1MzdkIn0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiJ9.aJ2KThTGpC4rz0ogDii2PSlS9xw63AvJlFJnXnU3D6k",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/tests/del-test?testid=cedab574d5ba11eaaff5b42e998c02ed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"tests",
+								"del-test"
+							],
+							"query": [
+								{
+									"key": "testid",
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "testid",
+									"value": "cedab574d5ba11eaaff5b42e998c02ed"
+								}
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/tests/mod-test?test_id=a0859b3cd4eb11ea99d7b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Undo Test Delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjM1M2UxY2U2NDczMWVhNWMxYWNmIn0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiIsInBob25lX25vIjoiOTE3MDQ1MjczNjcyIiwibmFtZSI6ImNoaW5tYXkga2FybW9rYXIiLCJpbnN0aXR1dGVfdHlwZSI6InNjaG9vbCIsImVtYWlsX2lkIjoidEBrLmNvbSIsImluc3RpdHV0ZV9uYW1lIjoiVGVzdCBPbmUiLCJhY2NvdW50X3R5cGUiOiJzdHVkZW50Iiwibm9fZnJlZV90cmlhbCI6MiwiaXNfYWN0aXZlIjp0cnVlLCJkZWxldGVkIjowLCJjcmVhdGVkIjoiMjAyMC0wOC0wMlQyMDoyNjoyNi43NjMyNzciLCJleHAiOjE1OTY5MTUxNjYuMDY0NTQ2fQ.P7TkdlNco6WXYbCAW10-KEMvsZHiQ2OfOoJHmnzBJfI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"test_id\": \"cedab574d5ba11eaaff5b42e998c02ed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/tests/undo-test-delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"tests",
+								"undo-test-delete"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/tests/undo-test-delete"
 					},
 					"response": []
 				}
@@ -503,7 +604,13 @@
 					"name": "Create New Test Attempt",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjM1M2UxY2U2NDczMWVhNWMxYWNmIn0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiIsInBob25lX25vIjoiOTE3MDQ1MjczNjcyIiwibmFtZSI6ImNoaW5tYXkga2FybW9rYXIiLCJpbnN0aXR1dGVfdHlwZSI6InNjaG9vbCIsImVtYWlsX2lkIjoidEBrLmNvbSIsImluc3RpdHV0ZV9uYW1lIjoiVGVzdCBPbmUiLCJhY2NvdW50X3R5cGUiOiJzdHVkZW50Iiwibm9fZnJlZV90cmlhbCI6MiwiaXNfYWN0aXZlIjp0cnVlLCJkZWxldGVkIjowLCJjcmVhdGVkIjoiMjAyMC0wOC0wMlQyMDoyNjoyNi43NjMyNzciLCJleHAiOjE1OTY5MTUxNjYuMDY0NTQ2fQ.P7TkdlNco6WXYbCAW10-KEMvsZHiQ2OfOoJHmnzBJfI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\t\"student_name\": \"chins\",\r\n\t\"phone_no\": \"917045273672\",\r\n    \"qna\": [\r\n        {\r\n            \"_id\": \"5f1f470f80f1b481125fda11\",\r\n            \"question\": \"2+2\",\r\n\t\t\t\"answer\": \"d\" \r\n        }\r\n    ]\r\n}",
@@ -995,6 +1102,29 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Welcome API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/edu/v1/api/welcome",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"edu",
+						"v1",
+						"api",
+						"welcome"
+					]
+				},
+				"description": "http://localhost:5000/edu/v1/api/welcome"
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

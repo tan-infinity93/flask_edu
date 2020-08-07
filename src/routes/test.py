@@ -10,12 +10,13 @@ from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
-from app.schema import TestQuestionDetails
-from middleware.decorators import is_valid_args, is_valid_json
+from app.schema import TestQuestionDetails, TestDeletion
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
 from utils.common_functions import format_api_error#get_uuid1, write_b64_to_file, save_file_to_s3
 
 testquestion_data = TestQuestionDetails()
+testdeletion_data = TestDeletion()
 
 # Class Definitions:
 
@@ -35,6 +36,7 @@ class TestQuestionDetails(Resource):
 		self.process_error_code = 422
 		self.exception_code = 500
 
+	@is_valid_token
 	@is_valid_args
 	def get(self):
 		'''
@@ -117,6 +119,7 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		"""
@@ -175,7 +178,8 @@ class TestQuestionDetails(Resource):
 					"duration": post_data.get("duration"),
 					"start_time": post_data.get("start_time"),
 					"end_time": post_data.get("end_time"),
-					"no_mandatory_questions": post_data.get("no_mandatory_questions")
+					"no_mandatory_questions": post_data.get("no_mandatory_questions"),
+					"deleted": 0
 				}
 				FlaskMongo.insert(db, collection1, data1)
 				
@@ -188,7 +192,8 @@ class TestQuestionDetails(Resource):
 						"option2": qna.get("options")[1],
 						"option3": qna.get("options")[2],
 						"option4": qna.get("options")[3],
-						"answer": qna.get("answer")
+						"answer": qna.get("answer"),
+						"deleted": 0
 					}
 					FlaskMongo.insert(db, collection2, data2)
 
@@ -229,6 +234,7 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	@is_valid_json
 	def put(self):
@@ -247,7 +253,7 @@ class TestQuestionDetails(Resource):
 
 			test_id = args_data.get("test_id")
 			queries = {
-				'id': test_id
+				'id': test_id, "deleted": 0
 			}
 			columns = {
 				'_id': 0
@@ -317,6 +323,158 @@ class TestQuestionDetails(Resource):
 			}
 			return response, self.bad_code, self.headers
 
+		except Exception as e:
+			# raise e
+			print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": str(e)
+			}
+			return response, self.exception_code, self.headers
+
+	@is_valid_token
+	@is_valid_args
+	def delete(self):
+		'''
+		'''
+		try:
+			args_data = request.args.to_dict()
+			# testquestion_data.load(args_data, partial=True)
+
+			test_id = args_data.get("testid")
+			queries = {'id': test_id, "deleted": 0}
+			columns = {'_id': 0}
+			collection1 = 'common_test_master'
+			test_data = FlaskMongo.find(collection1, columns, queries)
+
+			if not test_data:
+				response = {
+					"meta": self.meta,
+					"message": f"test with id {test_id} does not exists",
+					"status": "failure",
+				}
+				return response, self.bad_code, self.headers
+
+			elif test_data:
+				test_data = test_data[0]
+				if test_data.get('deleted') == 1:
+					response = {
+						"meta": self.meta,
+						"message": f"test with id {test_id} does not exists",
+						"status": "failure",
+					}
+					# FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='info')
+					return response, self.bad_code, self.headers
+
+			updates1 = {"deleted": 1}
+			queries1 = {"id": test_id}
+			FlaskMongo.update(collection1, updates1, queries1)
+
+			collection2 = 'common_question_master'
+			updates2 = {"deleted": 1}
+			queries2 = {"testid": test_id}
+			FlaskMongo.update(collection2, updates2, queries2)
+
+			response = {
+				"meta": self.meta,
+				"message": f"test with id {test_id} has been deleted",
+				"status": "success",
+			}
+			return response, self.success_code, self.headers
+		
+		except ValidationError as e:
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": format_api_error(e.messages)
+			}
+			return response, self.bad_code, self.headers
+
+		except Exception as e:
+			raise e
+			print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": str(e)
+			}
+			return response, self.exception_code, self.headers
+
+class UnDeleteTest(Resource):
+	'''
+	'''
+	def __init__(self):
+		'''
+		'''
+		self.meta = {
+			"version": 1.0,
+			"timestamp": datetime.now().isoformat()
+		}
+		self.headers = {"Content-Type": "application/json"}
+		self.success_code = 200
+		self.bad_code = 400
+		self.process_error_code = 422
+		self.exception_code = 500
+
+	@is_valid_token
+	@is_valid_json
+	def post(self):
+		"""
+		"""
+		try:
+			post_data = request.get_json()
+
+			# print(post_data)
+
+			testdeletion_data.load(post_data)
+
+			# Check for already exising entry:
+
+			collection1 = 'common_test_master'
+			collection2 = 'common_question_master'
+
+			test_id = post_data.get('test_id')
+			columns1 = {"_id": 0, "deleted": 0}
+			queries1 = {"id": test_id}
+			test_data = FlaskMongo.find(collection1, columns1, queries1)
+
+			if not test_data:
+				response = {
+					"meta": self.meta,
+					"message": f"test with id {test_id} does not exists",
+					"status": "failure"
+				}
+				return response, self.bad_code, self.headers
+			else:
+				queries1 = {"id": test_id}
+				updates1 = {"deleted": 0}
+				FlaskMongo.update(collection1, updates1, queries1)
+				
+				collection2 = 'common_question_master'
+				updates2 = {"deleted": 0}
+				queries2 = {"testid": test_id}
+				FlaskMongo.update(collection2, updates2, queries2)
+
+				response = {
+					"meta": self.meta,
+					"message": f"test with id {test_id} undeleted successfully",
+					"status": "success"
+				}
+				return response, self.success_code, self.headers
+
+		except ValidationError as e:
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"reason": format_api_error(e.messages)
+			}
+			return response, self.bad_code, self.headers
+		
 		except Exception as e:
 			# raise e
 			print(e)

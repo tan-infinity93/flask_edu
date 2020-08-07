@@ -153,6 +153,11 @@ class TestQuestionDetails(TestDetails):
 				error = {'difference': 'duration and time delta do not match, should be equal'}
 				raise ValidationError(error)
 
+class TestDeletion(Schema):
+	'''
+	'''
+	test_id = fields.Str(required=True)
+
 class TestAttempt(Schema):
 	'''
 	'''
@@ -165,6 +170,7 @@ class TestAttempt(Schema):
 		required=True
 	)
 	is_complete = fields.Boolean(required=False)
+	deleted = fields.Integer(required=False, strict=True)
 
 	@validates('student_id')
 	def check_mongo_objectid(self, value):

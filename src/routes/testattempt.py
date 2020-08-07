@@ -11,7 +11,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from app.schema import TestAttempt
-from middleware.decorators import is_valid_args, is_valid_json
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
 from utils.common_functions import format_api_error # get_uuid1, write_b64_to_file, save_file_to_s3
 
@@ -35,6 +35,7 @@ class TestAttemptDetails(Resource):
 		self.process_error_code = 422
 		self.exception_code = 500
 
+	@is_valid_token
 	@is_valid_args
 	def get(self):
 		'''
@@ -53,6 +54,7 @@ class TestAttemptDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		'''
@@ -152,6 +154,7 @@ class TestAttemptDetails(Resource):
 			}
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	@is_valid_json
 	def put(self):
@@ -281,6 +284,7 @@ class TestAttemptComplete(Resource):
 		self.process_error_code = 422
 		self.exception_code = 500
 	
+	@is_valid_token
 	@is_valid_args
 	@is_valid_json
 	def put(self):

@@ -37,4 +37,12 @@ def get_config(config_names):
         with open(config_file_path) as file:
             config_data.update(json.loads(file.read()))
 
+    # Update Account Scopes:
+
+    teacher_scope = config_data.get('SCOPES').get('teacher')
+    student_scope = config_data.get('SCOPES').get('student')
+    admin_scope = config_data.get('SCOPES').get('admin')
+    admin_scope = list(set(admin_scope + teacher_scope + student_scope))
+    config_data['SCOPES']['admin'] = admin_scope
+
     return config_data

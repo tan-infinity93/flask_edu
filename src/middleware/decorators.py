@@ -4,7 +4,9 @@
 # Import Modules:
 
 import json
-from flask import request
+import jwt
+from flask import request, current_app as c_app
+from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 
 # Middleware Decorators:
 
@@ -13,16 +15,53 @@ def is_valid_token(func):
 		"""
 			WIP
 		"""
-		response_code = 422
+		bad_code = 400
+		auth_error_code = 401
+		forbidden_error_code = 403
+		process_error_code = 422
 		response_headers = {"Content-Type": "application/json"}
 
-		# if not request.args.to_dict():
-		# 	response = {
-		# 		"message": "unable to process request",
-		# 		"status": "failure",
-		# 		"reason": "url arguments cannot be empty"
-		# 	}
-		# 	return response, response_code, response_headers
+		key = c_app.config.get('SECRET_KEY')
+		auth_token = request.headers.get("Authorization")
+
+		print(f'url: {request.path}')
+
+		if auth_token:
+			try:
+				token_details = jwt.decode(auth_token, key, algorithms=['HS256'])
+				print(f'token_details: {token_details}\n')
+				response = token_details
+
+				account_type = token_details.get("account_type")
+				account_scope = c_app.config.get('SCOPES')
+
+				if request.path not in account_scope:
+					response = {
+						'message': 'unable to process request', 
+						'status': 'failure', 
+						'reason': 'user does not have sufficient permissions'
+					}
+					return response, forbidden_error_code, response_headers
+
+			except ExpiredSignatureError as e:
+				response = {'message': 'unable to process request', 'error': str(e), 'reason': 'jwt token expired'}
+				return response, auth_error_code, response_headers
+
+			except InvalidSignatureError as e:
+				response = {'message': 'unable to process request', 'error' : str(e), 'reason': 'invalid jwt token'}
+				return response, auth_error_code, response_headers
+
+			except Exception as e:
+				response = {'message': 'unable to process request', 'error' : str(e), 'reason': 'jwt token expired'}
+				return response, auth_error_code, response_headers
+		else:
+			response = {
+				'message': 'unable to process request',
+				'status': 'failure',
+				'reason': 'no Authorization token found in headers'
+			}
+			return response, bad_code, response_headers
+
 		return func(*args, **kwargs)
 	return function_wrapper
 

@@ -41,12 +41,19 @@ def format_api_error(error):
 	except Exception as e:
 		print(e)
 
-def generate_auth_token(payload):
+def generate_auth_token(payload, user_data):
 	'''
 	'''
 	try:
 		key = c_app.config.get('SECRET_KEY')
 		headers = {'kid': secrets.token_hex(10)}
+		payload.update(user_data)
+		payload.update(
+			{
+				'exp': time.time() + 86400
+			}
+		)
+
 		token = jwt.encode(payload, key, algorithm='HS256', headers=headers)
 		token = token.decode('UTF-8')
 		print(type(token))

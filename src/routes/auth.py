@@ -13,6 +13,7 @@ from bson.objectid import ObjectId
 from app.schema import Token
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import generate_auth_token, format_api_error #get_uuid1, write_b64_to_file, save_file_to_s3
 
 token_data = Token()
@@ -59,15 +60,18 @@ class Auth(Resource):
 					"message": "please check provided credentials",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'token_generation', response, log_level='info')
 				return response, self.auth_code, self.headers
 
-			auth_token = generate_auth_token(post_data)
+			user_data = user_data[0]
+			auth_token = generate_auth_token(post_data, user_data)
 
 			response = {
 				"meta": self.meta,
 				"token": auth_token,
 				"status": "success"
 			}
+			FlaskLogger.log('post', 'token_generation', response, log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -79,6 +83,7 @@ class Auth(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'token_generation', response, log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -89,4 +94,5 @@ class Auth(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'token_generation', response, log_level='warning')
 			return response, self.exception_code, self.headers

@@ -10,6 +10,41 @@
 	"AWS_SECRET_ACCESS_KEY": "nZKlKsTiKQWS3DVzNbf5i3AQnG7wttoa2kvOyH+H",
 	"AWS_REGION": "us-east-2",
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
+	"LOGGER_NAME": "flask_edu.log",
+	"PROJECT_NAME": "flask_edu",
+	"SCOPES": {
+		"teacher": [
+			"/edu/v1/api/login",
+			"/edu/v1/testattempts/get-test",
+			"/edu/v1/testattempts/create-test",
+			"/edu/v1/testattempts/mod-test",
+			"/edu/v1/testattempts/del-test",
+			"/edu/v1/tests/undo-test-delete",
+			"/edu/v1/rooms/create-room",
+			"/edu/v1/rooms/get-room",
+			"/edu/v1/rooms/mod-room",
+			"/edu/v1/rooms/del-room",
+			"/edu/v1/rooms/create-room-enroll",
+			"/edu/v1/rooms/get-room-enroll",
+			"/edu/v1/rooms/mod-room-enroll",
+			"/edu/v1/rooms/del-room-enroll"
+		],
+		"student": [
+			"/edu/v1/api/login",
+			"/edu/v1/testattempts/get-test",
+			"/edu/v1/testattempts/create-test",
+			"/edu/v1/testattempts/mod-test",
+			"/edu/v1/testcomplete/mod-test",
+			"/edu/v1/rooms/create-room-enroll",
+			"/edu/v1/rooms/get-room-enroll",
+			"/edu/v1/rooms/mod-room-enroll",
+			"/edu/v1/rooms/del-room-enroll"
+		],
+		"admin": [
+			"/edu/v1/api/welcome"
+		]
+	},
+	"ENV": "development",
 	"HOST": "127.0.0.1",
 	"PORT": 5000,
 	"DEBUG": true

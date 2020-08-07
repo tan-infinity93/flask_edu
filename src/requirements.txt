@@ -12,12 +12,15 @@ gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.2
 jmespath==0.10.0
+limits==1.5.1
 MarkupSafe==1.1.1
 marshmallow==3.5.1
 pkg-resources==0.0.0
 PyJWT==1.7.1
+pylogbeat==1.0.4
 pymongo==3.10.1
 python-dateutil==2.8.1
+python-logstash-async==1.6.6
 pytz==2019.3
 PyVirtualDisplay==0.2.5
 s3transfer==0.3.3

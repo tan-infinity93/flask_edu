@@ -12,6 +12,7 @@ from bson.objectid import ObjectId
 from app.schema import TeacherUsers
 from middleware.decorators import is_valid_args, is_valid_json
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import get_uuid1, format_api_error
 from app.schema import Rooms
 
@@ -69,6 +70,7 @@ class RoomsApi(Resource):
 				"meta": self.meta,
 				"rooms": query_data
 			}
+			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -80,6 +82,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_json
@@ -119,6 +122,7 @@ class RoomsApi(Resource):
 					"message": f"teacher with id {teacher_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_rooms_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			if room_data != []:
@@ -127,6 +131,7 @@ class RoomsApi(Resource):
 					"message": f"room {room_name} is already created",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_rooms_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			room_id = get_uuid1()
@@ -140,6 +145,7 @@ class RoomsApi(Resource):
 				"message": f"new room with id {room_id} added successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('post', 'add_rooms_info', response, input_data=str(post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -151,6 +157,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'add_rooms_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -162,6 +169,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'add_rooms_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_args
@@ -205,6 +213,7 @@ class RoomsApi(Resource):
 					"message": f"teacher with id {teacher_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			if room_data == []:
@@ -213,6 +222,7 @@ class RoomsApi(Resource):
 					"message": f"room with id {room_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			######
@@ -229,7 +239,20 @@ class RoomsApi(Resource):
 				"message": f"room with id {room_id} updated successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
+
+		except ValidationError as e:
+			# raise e
+			# print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"errors": format_api_error(e.messages)
+			}
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='error')
+			return response, self.bad_code, self.headers
 
 		except Exception as e:
 			# raise e
@@ -239,6 +262,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_args
@@ -265,6 +289,7 @@ class RoomsApi(Resource):
 					"message": f"room with id {room_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='info')
 				return response, self.bad_code, self.headers
 			
 			elif room_data:
@@ -275,6 +300,7 @@ class RoomsApi(Resource):
 						"message": f"room with id {room_id} does not exists",
 						"status": "failure",
 					}
+					FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='info')
 					return response, self.bad_code, self.headers
 
 			updates = {"deleted": 1}
@@ -287,6 +313,7 @@ class RoomsApi(Resource):
 				"message": f"room with id {room_id} deleted successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -297,4 +324,5 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers

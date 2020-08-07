@@ -11,8 +11,9 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from app.schema import ResetTrial
-from middleware.decorators import is_valid_args, is_valid_json
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import format_api_error#get_uuid1, write_b64_to_file, save_file_to_s3
 
 reset_trial_data = ResetTrial()
@@ -35,6 +36,7 @@ class ResetTrial(Resource):
 		self.process_error_code = 422
 		self.exception_code = 500
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		'''
@@ -57,6 +59,11 @@ class ResetTrial(Resource):
 					"message": f"user with id {user_id} does not exists",
 					"status": "failure"
 				}
+				# FlaskLogger.log('post', 'reset_trial', response, log_level='debug')
+				FlaskLogger.log('post', 'reset_trial', response, log_level='info')
+				# FlaskLogger.log('post', 'reset_trial', response, log_level='warning')
+				# FlaskLogger.log('post', 'reset_trial', response, log_level='error')
+				# FlaskLogger.log('post', 'reset_trial', response, log_level='critical')
 				return response, self.bad_code, self.headers
 			else:
 				if args_data:
@@ -74,6 +81,7 @@ class ResetTrial(Resource):
 					"message": f"trial for user with id {user_id} has been reset",
 					"status": "success"
 				}
+				FlaskLogger.log('post', 'reset_trial', response, log_level='info')
 				return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -84,6 +92,7 @@ class ResetTrial(Resource):
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'reset_trial', response, log_level='error')
 			return response, self.bad_code, self.headers
 		
 		except Exception as e:
@@ -95,4 +104,5 @@ class ResetTrial(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'reset_trial', response, log_level='warning')
 			return response, self.exception_code, self.headers
