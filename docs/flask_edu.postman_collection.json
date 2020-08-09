@@ -15,10 +15,16 @@
 							"name": "Create New Teacher User",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImIzNDAxOTBlM2ZlMTg0MjIxOGQ2In0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwicGhvbmVfbm8iOiI5MTcwNDUyNzM2NzEiLCJuYW1lIjoidGFubW95IGthcm1va2FyIiwiaW5zdGl0dXRlX3R5cGUiOiJzY2hvb2wiLCJlbWFpbF9pZCI6InRjQGsuY29tIiwiaW5zdGl0dXRlX25hbWUiOiJUZXN0IE9uZSIsImFjY291bnRfdHlwZSI6InRlYWNoZXIiLCJub19mcmVlX3RyaWFsIjoyLCJpc19hY3RpdmUiOnRydWUsImRlbGV0ZWQiOjAsImNyZWF0ZWQiOiIyMDIwLTA4LTAyVDIwOjI1OjI5LjQ4MDg4MyJ9.QLxGd4o718-a_uqyJ0pOC34y_x4D04B9QqFjGtEOh8Y",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"raw": "{\r\n    \"phone_no\": \"917045273674\",\r\n    \"username\": \"tan\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2003\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"Aurora\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -48,7 +54,13 @@
 							"name": "Get Existing Teacher User",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImIzNDAxOTBlM2ZlMTg0MjIxOGQ2In0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwicGhvbmVfbm8iOiI5MTcwNDUyNzM2NzEiLCJuYW1lIjoidGFubW95IGthcm1va2FyIiwiaW5zdGl0dXRlX3R5cGUiOiJzY2hvb2wiLCJlbWFpbF9pZCI6InRjQGsuY29tIiwiaW5zdGl0dXRlX25hbWUiOiJUZXN0IE9uZSIsImFjY291bnRfdHlwZSI6InRlYWNoZXIiLCJub19mcmVlX3RyaWFsIjoyLCJpc19hY3RpdmUiOnRydWUsImRlbGV0ZWQiOjAsImNyZWF0ZWQiOiIyMDIwLTA4LTAyVDIwOjI1OjI5LjQ4MDg4MyJ9.QLxGd4o718-a_uqyJ0pOC34y_x4D04B9QqFjGtEOh8Y",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26d3e1188353aca57d6c76",
 									"protocol": "http",
@@ -362,7 +374,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"chins5\",\r\n    \"password\": \"m@broSonu2002\"\r\n}",
+							"raw": "{\r\n    \"username\": \"tan65\",\r\n    \"password\": \"m@broSonu2002\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -428,10 +440,19 @@
 				{
 					"name": "Get Existing Test Data",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImIzNDAxOTBlM2ZlMTg0MjIxOGQ2In0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwicGhvbmVfbm8iOiI5MTcwNDUyNzM2NzEiLCJuYW1lIjoidGFubW95IGthcm1va2FyIiwiaW5zdGl0dXRlX3R5cGUiOiJzY2hvb2wiLCJlbWFpbF9pZCI6InRjQGsuY29tIiwiaW5zdGl0dXRlX25hbWUiOiJUZXN0IE9uZSIsImFjY291bnRfdHlwZSI6InRlYWNoZXIiLCJub19mcmVlX3RyaWFsIjoyLCJpc19hY3RpdmUiOnRydWUsImRlbGV0ZWQiOjAsImNyZWF0ZWQiOiIyMDIwLTA4LTAyVDIwOjI1OjI5LjQ4MDg4MyJ9.QLxGd4o718-a_uqyJ0pOC34y_x4D04B9QqFjGtEOh8Y",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=a0859b3cd4eb11ea99d7b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=cedab574d5ba11eaaff5b42e998c02ed",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -451,12 +472,12 @@
 								},
 								{
 									"key": "testid",
-									"value": "a0859b3cd4eb11ea99d7b42e998c02ed"
+									"value": "a0859b3cd4eb11ea99d7b42e998c02ed",
+									"disabled": true
 								},
 								{
 									"key": "testid",
-									"value": "a0859b3cd4eb11ea99d7b42e998c02ed",
-									"disabled": true
+									"value": "cedab574d5ba11eaaff5b42e998c02ed"
 								}
 							]
 						},
@@ -1038,7 +1059,7 @@
 			"name": "Stats",
 			"item": [
 				{
-					"name": "Get Test Stats",
+					"name": "oGet Test Stats",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1072,7 +1093,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Student Stats",
+					"name": "Get oStudent Stats",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1097,6 +1118,102 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/studentstats/get-test?studentid=72c4876a-cf4d-11ea-b5ea-b42e998c02ed"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/stats/users/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"stats",
+								"users",
+								"get"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/stats/users/get"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Test Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/stats/tests/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"stats",
+								"tests",
+								"get"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/stats/tests/get"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/stats/rooms/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"stats",
+								"rooms",
+								"get"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/stats/rooms/get"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room Enroll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/stats/rooms-enroll/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"stats",
+								"rooms-enroll",
+								"get"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/stats/rooms-enroll/get"
 					},
 					"response": []
 				}

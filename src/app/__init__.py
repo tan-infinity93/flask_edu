@@ -40,9 +40,19 @@ def create_app(config_name):
 	from routes.student import StudentUsers
 	from routes.test import TestQuestionDetails, UnDeleteTest
 	from routes.testattempt import TestAttemptDetails, TestAttemptComplete
-	from routes.stats import TestScoresStats, StudentsStats
+	from routes.stat import TestScoresStats, StudentsStats
 	from routes.rooms import RoomsApi
 	from routes.rooms_enrolled import RoomsEnrolled
+
+	from routes.stats.users import UsersStats
+	from routes.stats.tests import TestsStats
+	from routes.stats.rooms import RoomsStats
+	from routes.stats.rooms_enrolled import RoomsEnrolledStats
+
+	api.add_resource(UsersStats, '/edu/v1/stats/users/get', methods=['GET'], endpoint='get_ustats')
+	api.add_resource(TestsStats, '/edu/v1/stats/tests/get', methods=['GET'], endpoint='get_tstats')
+	api.add_resource(RoomsStats, '/edu/v1/stats/rooms/get', methods=['GET'], endpoint='get_rstats')
+	api.add_resource(RoomsEnrolledStats, '/edu/v1/stats/rooms-enroll/get', methods=['GET'], endpoint='get_restats')
 
 	api.add_resource(Welcome, '/edu/v1/api/welcome', methods=['GET'], endpoint='welcome_api')
 

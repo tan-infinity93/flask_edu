@@ -97,6 +97,7 @@ class TestAttemptDetails(Resource):
 					"message": f"Test {test_id} is under progress",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_test_attempt_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 			else:
 				data1 = {
@@ -130,6 +131,7 @@ class TestAttemptDetails(Resource):
 					"message": f"test with id {test_id} started successfully",
 					"status": "success"
 				}
+				FlaskLogger.log('post', 'add_test_attempt_info', response, input_data=str(post_data), log_level='info')
 				return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -141,10 +143,11 @@ class TestAttemptDetails(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'add_test_attempt_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
-			raise e
+			# raise e
 			print(e)
 			response = {
 				"meta": self.meta,
@@ -152,6 +155,7 @@ class TestAttemptDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'add_test_attempt_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -201,6 +205,7 @@ class TestAttemptDetails(Resource):
 					"message": f"No data found for Test with {test_id}",
 					"status": "failure",
 				}
+				FlaskLogger.log('put', 'mod_test_attempt_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 			else:
 				queries1 = {
@@ -227,12 +232,6 @@ class TestAttemptDetails(Resource):
 						"answer": qa.get("answer"),
 						"is_correct": qa.get("is_correct")
 					}
-
-					# updates2 ={}
-					# if qa.get("option_selected"):
-					# 	updates2.update({"answer": qa.get("option_selected")})
-					# if qa.get("is_correct"):
-					# 	updates2.update({"is_correct": qa.get("is_correct")})
 			
 					# Update Question Answers Here:
 
@@ -241,9 +240,9 @@ class TestAttemptDetails(Resource):
 			response = {
 				"meta": self.meta,
 				"message": f"test attempt with {test_id} updated successfully",
-				# "unique_id": post_data['unique_id'],
 				"status": "success"
 			}
+			FlaskLogger.log('put', 'mod_test_attempt_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -255,10 +254,11 @@ class TestAttemptDetails(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('put', 'mod_test_attempt_info', response, input_data=str(args_data, post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
-			raise e
+			# raise e
 			print(e)
 			response = {
 				"meta": self.meta,
@@ -266,6 +266,7 @@ class TestAttemptDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('put', 'mod_test_attempt_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 class TestAttemptComplete(Resource):
@@ -318,6 +319,7 @@ class TestAttemptComplete(Resource):
 					"status": "failure",
 					"reason": f"No test with id {test_id} found for student id {student_id}"
 				}
+				FlaskLogger.log('put', 'mod_test_complete_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 			else:
 				updates1 = {
@@ -333,6 +335,7 @@ class TestAttemptComplete(Resource):
 					"message": f"Test with id {test_id} updated for student id {student_id}",
 					"status": "success"
 				}
+				FlaskLogger.log('put', 'mod_test_complete_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -344,10 +347,11 @@ class TestAttemptComplete(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('put', 'mod_test_complete_info', response, input_data=str(args_data, post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
-			raise e
+			# raise e
 			print(e)
 			response = {
 				"meta": self.meta,
@@ -355,4 +359,5 @@ class TestAttemptComplete(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('put', 'mod_test_complete_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers

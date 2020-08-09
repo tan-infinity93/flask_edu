@@ -9,7 +9,6 @@ import time
 import base64
 import secrets
 import jwt
-import boto3
 from flask import current_app as c_app
 
 # Function Definitions:

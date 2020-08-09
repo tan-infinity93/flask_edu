@@ -10,8 +10,9 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from app.schema import TeacherUsers
-from middleware.decorators import is_valid_args, is_valid_json
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import format_api_error #get_uuid1, write_b64_to_file, save_file_to_s3
 
 teacherusers_data = TeacherUsers()
@@ -35,6 +36,7 @@ class TeacherUsers(Resource):
 		self.exception_code = 500
 		self.account_type = "teacher"
 
+	@is_valid_token
 	@is_valid_args
 	def get(self):
 		'''
@@ -66,6 +68,7 @@ class TeacherUsers(Resource):
 				"meta": self.meta,
 				"users": query_data
 			}
+			FlaskLogger.log('get', '{self.account_type}_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -77,8 +80,10 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('get', '{self.account_type}_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		'''
@@ -110,6 +115,7 @@ class TeacherUsers(Resource):
 					"message": f"user {username} is already registered",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			post_data["account_type"] = self.account_type
@@ -125,6 +131,7 @@ class TeacherUsers(Resource):
 				# "unique_id": post_data['unique_id'],
 				"status": "success"
 			}
+			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -136,6 +143,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -147,8 +155,10 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	@is_valid_json
 	def put(self):
@@ -159,19 +169,9 @@ class TeacherUsers(Resource):
 			post_data = request.get_json()
 			print(args_data)
 			print(post_data)
-			user = args_data.get("user")
-			# user = args_data.get("user", "all")
-			# print(f'condition: {(not user or post_data)}')
-
-			if not user or not post_data:
-				response = {
-					"meta": self.meta,
-					"message": "unable to process request",
-					"status": "failure",
-				}
-				return response, self.bad_code, self.headers
 
 			teacherusers_data.load(post_data, partial=True)
+			user = args_data.get("user")
 
 			columns = {"_id": 0}
 			queries = {"_id": ObjectId(user)}
@@ -184,6 +184,7 @@ class TeacherUsers(Resource):
 					"message": f"user {user} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			updates = post_data
@@ -198,6 +199,7 @@ class TeacherUsers(Resource):
 				"message": f"user {user} updated successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -209,6 +211,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -219,8 +222,10 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	def delete(self):
 		'''
@@ -249,6 +254,7 @@ class TeacherUsers(Resource):
 					"message": f"user with id {userid} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('delete', f'del_{self.account_type}_info', response, input_data=str(args_data), log_level='info')
 				return response, self.bad_code, self.headers
 			
 			elif user_data:
@@ -259,6 +265,7 @@ class TeacherUsers(Resource):
 						"message": f"user with id {userid} does not exists",
 						"status": "failure",
 					}
+					FlaskLogger.log('delete', f'del_{self.account_type}_info', response, input_data=str(args_data), log_level='info')
 					return response, self.bad_code, self.headers
 
 			updates = {"deleted": 1}
@@ -273,6 +280,7 @@ class TeacherUsers(Resource):
 				"message": f"user with id {userid} deleted successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('delete', f'del_{self.account_type}_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -284,6 +292,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('delete', f'del_{self.account_type}_info', response, input_data=str(args_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -294,4 +303,5 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('delete', f'del_{self.account_type}_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers

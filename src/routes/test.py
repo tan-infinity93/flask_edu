@@ -13,6 +13,7 @@ from bson.objectid import ObjectId
 from app.schema import TestQuestionDetails, TestDeletion
 from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import format_api_error#get_uuid1, write_b64_to_file, save_file_to_s3
 
 testquestion_data = TestQuestionDetails()
@@ -70,16 +71,8 @@ class TestQuestionDetails(Resource):
 					details = []
 
 					for qd2 in query_data2:
-						# qd2.pop("customerid")
-						# qd2.pop("testid")
-						
-						# qd1.pop("id")
 						qd1.update(qd2)
-
-						print(f'td: {qd1}')
-						details.append(
-							qd1
-						)
+						details.append(qd1)
 					test_data[idx] = details
 
 			else:
@@ -89,23 +82,26 @@ class TestQuestionDetails(Resource):
 				columns1 = {"_id": 0}
 				queries2 = {"testid": testid}
 				columns2 = {"customerid": 0, "testid": 0}
-
-			
 				query_data1 = FlaskMongo.find(collection1, columns1, queries1)
 				query_data2 = FlaskMongo.find(collection2, columns2, queries2)
 
-				# print(f'query_data1: {query_data1}\n')
-				# print(f'query_data2: {query_data2}\n')
+				print(f'query_data1: {query_data1}\n')
+				print(f'query_data2: {query_data2}\n')
 
-				query_data1 = query_data1[0]
-				query_data1['test_id'] = query_data1.pop('id')
-				query_data1['qna'] = query_data2
-				test_data = query_data1
+				if query_data1 and query_data2:
+					query_data1 = query_data1[0]
+					query_data1['test_id'] = query_data1.pop('id')
+					query_data1['qna'] = query_data2
+					test_data = query_data1
+				
+				else:
+					test_data = {}
 
 			response = {
 				"meta": self.meta,
 				"test_data": test_data
 			}
+			FlaskLogger.log('get', 'tests_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -117,6 +113,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -150,6 +147,7 @@ class TestQuestionDetails(Resource):
 					"message": f"user with id {customer_id} does not exists",
 					"status": "failure"
 				}
+				FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			elif user_data[0].get("account_type") != 'teacher':
@@ -158,6 +156,7 @@ class TestQuestionDetails(Resource):
 					"message": f"user with id {customer_id} is not allowed to create tests",
 					"status": "failure"
 				}
+				FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='info')
 				return response, self.process_error_code, self.headers
 
 			elif user_data[0].get("no_free_trial") < 1:
@@ -166,6 +165,7 @@ class TestQuestionDetails(Resource):
 					"message": f"user with id {customer_id} has 0 trials left. Please renew subscription.",
 					"status": "failure"
 				}
+				FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='info')
 				return response, self.process_error_code, self.headers
 
 			else:
@@ -212,6 +212,7 @@ class TestQuestionDetails(Resource):
 					"message": f"new test with id {testid} created successfully",
 					"status": "success"
 				}
+				FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='info')
 				return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -221,6 +222,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 		
 		except Exception as e:
@@ -232,6 +234,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'add_tests_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -267,14 +270,13 @@ class TestQuestionDetails(Resource):
 					"message": f"test with id {test_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
-			####
-			db = c_app.config.get('MONGO_DATABASE')
 			collection1 = 'common_test_master'
 			collection2 = 'common_question_master'
 
-			data1 = {
+			updates1 = {
 				"id": test_id,
 				"details": post_data.get("details"),
 				"schedule": post_data.get("schedule"),
@@ -283,7 +285,6 @@ class TestQuestionDetails(Resource):
 				"end_time": post_data.get("end_time"),
 				"no_mandatory_questions": post_data.get("no_mandatory_questions")
 			}
-			updates1 = data1
 			queries1 = {
 				"id": test_id
 			}
@@ -305,13 +306,13 @@ class TestQuestionDetails(Resource):
 					"_id": ObjectId(qna.get("_id")), "testid": test_id, "customerid": data2.get("customerid")
 				}
 				FlaskMongo.update(collection2, updates2, queries2)
-			####
 
 			response = {
 				"meta": self.meta,
 				"message": f"test with id {test_id} updated successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -321,6 +322,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -332,6 +334,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -355,6 +358,7 @@ class TestQuestionDetails(Resource):
 					"message": f"test with id {test_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('delete', 'del_tests_info', response, input_data=str(args_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			elif test_data:
@@ -365,7 +369,7 @@ class TestQuestionDetails(Resource):
 						"message": f"test with id {test_id} does not exists",
 						"status": "failure",
 					}
-					# FlaskLogger.log('delete', 'del_rooms_info', response, input_data=str(args_data), log_level='info')
+					FlaskLogger.log('delete', 'del_tests_info', response, input_data=str(args_data), log_level='info')
 					return response, self.bad_code, self.headers
 
 			updates1 = {"deleted": 1}
@@ -382,6 +386,7 @@ class TestQuestionDetails(Resource):
 				"message": f"test with id {test_id} has been deleted",
 				"status": "success",
 			}
+			FlaskLogger.log('delete', 'del_tests_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 		
 		except ValidationError as e:
@@ -391,6 +396,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
+			FlaskLogger.log('delete', 'del_tests_info', response, input_data=str(args_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -402,6 +408,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('delete', 'del_tests_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 class UnDeleteTest(Resource):
@@ -448,6 +455,7 @@ class UnDeleteTest(Resource):
 					"message": f"test with id {test_id} does not exists",
 					"status": "failure"
 				}
+				FlaskLogger.log('delete', 'undo_del_tests', response, input_data=str(args_data), log_level='info')
 				return response, self.bad_code, self.headers
 			else:
 				queries1 = {"id": test_id}
@@ -464,6 +472,7 @@ class UnDeleteTest(Resource):
 					"message": f"test with id {test_id} undeleted successfully",
 					"status": "success"
 				}
+				FlaskLogger.log('delete', 'undo_del_tests', response, input_data=str(args_data), log_level='info')
 				return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -473,6 +482,7 @@ class UnDeleteTest(Resource):
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
+			FlaskLogger.log('delete', 'undo_del_tests', response, input_data=str(args_data), log_level='error')
 			return response, self.bad_code, self.headers
 		
 		except Exception as e:
@@ -484,4 +494,5 @@ class UnDeleteTest(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('delete', 'undo_del_tests', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers

@@ -19,6 +19,7 @@ def is_valid_token(func):
 		auth_error_code = 401
 		forbidden_error_code = 403
 		process_error_code = 422
+		server_error_code = 500
 		response_headers = {"Content-Type": "application/json"}
 
 		key = c_app.config.get('SECRET_KEY')
@@ -33,13 +34,13 @@ def is_valid_token(func):
 				response = token_details
 
 				account_type = token_details.get("account_type")
-				account_scope = c_app.config.get('SCOPES')
+				account_scope = c_app.config.get('SCOPES').get(account_type)
 
 				if request.path not in account_scope:
 					response = {
 						'message': 'unable to process request', 
 						'status': 'failure', 
-						'reason': 'user does not have sufficient permissions'
+						'reason': f'{account_type} user does not have sufficient permissions'
 					}
 					return response, forbidden_error_code, response_headers
 
@@ -52,8 +53,8 @@ def is_valid_token(func):
 				return response, auth_error_code, response_headers
 
 			except Exception as e:
-				response = {'message': 'unable to process request', 'error' : str(e), 'reason': 'jwt token expired'}
-				return response, auth_error_code, response_headers
+				response = {'message': 'unable to process request', 'reason': 'server error'}
+				return response, server_error_code, response_headers
 		else:
 			response = {
 				'message': 'unable to process request',
@@ -88,6 +89,8 @@ def is_valid_json(func):
 		"""
 		response_code = 422
 		response_headers = {"Content-Type": "application/json"}
+
+		print(request.headers.get("Content-Type"))
 
 		if request.headers.get("Content-Type") != "application/json":
 			response = {

@@ -52,7 +52,7 @@ class FlaskMongo:
 			raise e
 
 	@staticmethod
-	def find(collection, columns, queries, distinct=False, distinct_column=None):
+	def find(collection, columns, queries, distinct=False, distinct_column=None, aggregate=None):
 		'''
 		'''
 		try:
@@ -62,6 +62,10 @@ class FlaskMongo:
 			if distinct:
 				data = col.distinct(distinct_column)
 				# data = [d for d in data]
+
+			elif aggregate:
+				data = col.aggregate(aggregate)
+				data = [d for d in data]
 
 			else:
 				data = col.find(queries, columns)

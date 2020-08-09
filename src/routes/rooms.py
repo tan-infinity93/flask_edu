@@ -10,7 +10,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from app.schema import TeacherUsers
-from middleware.decorators import is_valid_args, is_valid_json
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
 from bindings.flask_logger import FlaskLogger
 from utils.common_functions import get_uuid1, format_api_error
@@ -37,6 +37,7 @@ class RoomsApi(Resource):
 		self.exception_code = 500
 		self.account_type = "teacher"
 
+	@is_valid_token
 	@is_valid_args
 	def get(self):
 		'''
@@ -85,6 +86,7 @@ class RoomsApi(Resource):
 			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		'''
@@ -265,6 +267,7 @@ class RoomsApi(Resource):
 			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	def delete(self):
 		'''

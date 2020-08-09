@@ -9,7 +9,7 @@ from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
-from middleware.decorators import is_valid_args, is_valid_json
+from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
 from utils.common_functions import get_uuid1, format_api_error
 from app.schema import RoomsEnrolled
@@ -35,6 +35,7 @@ class RoomsEnrolled(Resource):
 		self.exception_code = 500
 		self.account_type = "teacher"
 
+	@is_valid_token
 	@is_valid_args
 	def get(self):
 		'''
@@ -75,6 +76,7 @@ class RoomsEnrolled(Resource):
 				"meta": self.meta,
 				"rooms_enrollment": query_data
 			}
+			FlaskLogger.log('get', 'rooms_enrol_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -86,8 +88,10 @@ class RoomsEnrolled(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('get', 'rooms_enrol_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_json
 	def post(self):
 		'''
@@ -132,6 +136,7 @@ class RoomsEnrolled(Resource):
 					"message": f"teacher with id {teacher_id} has not created room with id {room_id}",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			if user_data == []:
@@ -140,6 +145,7 @@ class RoomsEnrolled(Resource):
 					"message": f"student with id {student_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			if room_enrolled_data != []:
@@ -148,6 +154,7 @@ class RoomsEnrolled(Resource):
 					"message": f"student with id {student_id} already enrolled in room with id {room_id}",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			post_data["banned"] = 0
@@ -160,6 +167,7 @@ class RoomsEnrolled(Resource):
 				"message": f"student with id {student_id} added to room with id {room_id} successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -171,6 +179,7 @@ class RoomsEnrolled(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
+			FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -182,8 +191,10 @@ class RoomsEnrolled(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
 	@is_valid_args
 	@is_valid_json
 	def put(self):
@@ -222,6 +233,7 @@ class RoomsEnrolled(Resource):
 					"message": f"rooms enrollment for id {room_id} does not exists",
 					"status": "failure",
 				}
+				FlaskLogger.log('post', 'mod_rooms_enroll_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			######
@@ -238,7 +250,20 @@ class RoomsEnrolled(Resource):
 				"message": f"rooms enrollment with room id {room_id} updated successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('post', 'mod_rooms_enroll_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
+
+		except ValidationError as e:
+			# raise e
+			# print(e)
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request",
+				"status": "failure",
+				"errors": format_api_error(e.messages)
+			}
+			FlaskLogger.log('post', 'mod_rooms_enroll_info', response, input_data=str(args_data, post_data), log_level='error')
+			return response, self.bad_code, self.headers
 
 		except Exception as e:
 			# raise e
@@ -248,8 +273,11 @@ class RoomsEnrolled(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('post', 'mod_rooms_enroll_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
+	@is_valid_token
+	@is_valid_args
 	def delete(self):
 		'''
 		'''
@@ -276,7 +304,9 @@ class RoomsEnrolled(Resource):
 					"message": f"no enrollment found for student id {student_id} in room id {room_id}",
 					"status": "failure",
 				}
+				FlaskLogger.log('delete', 'del_rooms_enroll_info', response, input_data=str(args_data), log_level='info')
 				return response, self.bad_code, self.headers
+			
 			elif rooms_enrolled_data:
 				rooms_enrolled_data = rooms_enrolled_data[0]
 				if rooms_enrolled_data.get('deleted') == 1:
@@ -285,6 +315,8 @@ class RoomsEnrolled(Resource):
 						"message": f"no enrollment found for student id {student_id} in room id {room_id}",
 						"status": "failure",
 					}
+
+					FlaskLogger.log('delete', 'del_rooms_enroll_info', response, input_data=str(args_data), log_level='info')
 					return response, self.bad_code, self.headers
 
 			updates = {"deleted": 1}
@@ -298,6 +330,7 @@ class RoomsEnrolled(Resource):
 				"message": f"enrollment for student id {student_id} in room id {room_id} deleted successfully",
 				"status": "success"
 			}
+			FlaskLogger.log('delete', 'del_rooms_enroll_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -308,4 +341,5 @@ class RoomsEnrolled(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
+			FlaskLogger.log('delete', 'del_rooms_enroll_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers

@@ -15,6 +15,14 @@
 	"SCOPES": {
 		"teacher": [
 			"/edu/v1/api/login",
+			"/edu/v1/users/teacher/get-user",
+			"/edu/v1/users/teacher/add-user",
+			"/edu/v1/users/teacher/mod-user",
+			"/edu/v1/users/teacher/del-user",
+			"/edu/v1/tests/get-test",
+			"/edu/v1/tests/create-test",
+			"/edu/v1/tests/mod-test",
+			"/edu/v1/tests/del-test",
 			"/edu/v1/testattempts/get-test",
 			"/edu/v1/testattempts/create-test",
 			"/edu/v1/testattempts/mod-test",
@@ -31,6 +39,10 @@
 		],
 		"student": [
 			"/edu/v1/api/login",
+			"/edu/v1/users/student/get-user",
+			"/edu/v1/users/student/add-user",
+			"/edu/v1/users/student/mod-user",
+			"/edu/v1/users/student/del-user",
 			"/edu/v1/testattempts/get-test",
 			"/edu/v1/testattempts/create-test",
 			"/edu/v1/testattempts/mod-test",
