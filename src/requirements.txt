@@ -1,4 +1,7 @@
 aniso8601==8.0.0
+beautifulsoup4==4.9.0
+boto3==1.13.16
+botocore==1.16.16
 click==7.1.1
 docutils==0.15.2
 EasyProcess==0.3
@@ -12,12 +15,18 @@ jmespath==0.10.0
 limits==1.5.1
 MarkupSafe==1.1.1
 marshmallow==3.5.1
+pdfkit==0.6.1
+pkg-resources==0.0.0
 PyJWT==1.7.1
 pylogbeat==1.0.4
 pymongo==3.10.1
 python-dateutil==2.8.1
 python-logstash-async==1.6.6
 pytz==2019.3
+PyVirtualDisplay==0.2.5
+s3transfer==0.3.3
+selenium==3.141.0
 six==1.14.0
+soupsieve==2.0
 urllib3==1.25.9
 Werkzeug==1.0.1

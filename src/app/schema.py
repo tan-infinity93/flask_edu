@@ -35,6 +35,11 @@ class ResetTrial(Schema):
 			error = 'please check userid, is invalid'
 			raise ValidationError(error)
 
+class Pdf(Schema):
+	'''
+	'''
+	pass
+
 class TeacherUsers(Schema):
 	'''
 	'''
