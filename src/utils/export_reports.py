@@ -14,6 +14,7 @@ class Pdf:
         '''
         '''
         self.filename = filename
+        self.file_path = file_path
 
     def parse_url(self, url):
         '''
@@ -27,7 +28,7 @@ class Pdf:
         '''
         '''
         try:
-            pdfkit.from_url(file_path, filename)
+            pdfkit.from_url(filename)
         except Expression as e:
             raise e
 
