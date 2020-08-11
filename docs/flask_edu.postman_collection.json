@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4e94e73f-720d-4b90-a9c8-252ace1379ad",
+		"_postman_id": "5a48b261-751e-4cb4-b5bc-f21fbab68105",
 		"name": "flask_edu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1214,6 +1214,45 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/stats/rooms-enroll/get"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Utilities",
+			"item": [
+				{
+					"name": "Create Pdf from Url",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_name\": \"sample2.pdf\",\r\n    \"url\": \"https://gist.github.com/brunogaspar/bd89079245923c04be6b0f92af431c10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/utils/pdfs/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"utils",
+								"pdfs",
+								"create"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/utils/pdfs/create"
 					},
 					"response": []
 				}
