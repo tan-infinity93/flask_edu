@@ -5,7 +5,7 @@
 	"MONGO_PASSWORD": "guest",
 	"MONGO_DATABASE": "whatsapp_edu",
 	"MONGO_URL": "mongodb://localhost:27017/",
-	"FILE_UPLOAD_DIR": "C:\\Users\\TAN-PC\\Desktop\\work\\flask_grocer\\src\\user_data",
+	"FILES_DIR": "/mnt/c/Users/chinmay-pc/Desktop/work/flask_edu/files",
 	"AWS_ACCESS_KEY_ID": "AKIAJWIDY7D3OOEXXJAQ",
 	"AWS_SECRET_ACCESS_KEY": "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",
 	"AWS_REGION": "us-east-2",

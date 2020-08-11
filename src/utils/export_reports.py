@@ -3,40 +3,60 @@
 
 # Import Modules:
 
+import os
 import pdfkit
+from flask import current_app as c_app
 
 # Class Definitions:
 
-class Pdf:
+class PdfGenerator:
     '''
     '''
-    def __init__(self, filename):
+    def __init__(self, file_name):
         '''
         '''
-        self.filename = filename
-        self.file_path = file_path
+        self.file_name = file_name
+        self.files_dir = c_app.config.get('FILES_DIR')
+        self.check_directory_path()
+
+    def check_directory_path(self):
+        '''
+            Check if DIR exists else create new DIR at Path
+        '''
+        try:
+            if not os.path.isdir(self.files_dir):
+                os.makedirs(self.files_dir)
+
+        except Exception as e:
+            raise e
 
     def parse_url(self, url):
         '''
         '''
         try:
-            pdfkit.from_url(url, filename)
-        except Expression as e:
+            pdf_path = f'{self.files_dir}/{self.file_name}'
+            pdfkit.from_url(url, pdf_path)
+
+        except Exception as e:
             raise e
 
     def parse_file(self, file_path):
         '''
         '''
         try:
-            pdfkit.from_url(filename)
-        except Expression as e:
+            pdf_path = f'{self.files_dir}/{self.file_name}'
+            pdfkit.from_file(pdf_path)
+
+        except Exception as e:
             raise e
 
     def parse_string(self, string):
         '''
         '''
         try:
-            pdfkit.from_url(string, filename)
-        except Expression as e:
+            pdf_path = f'{self.files_dir}/{self.file_name}'
+            pdfkit.from_string(string, pdf_path)
+
+        except Exception as e:
             raise e
         

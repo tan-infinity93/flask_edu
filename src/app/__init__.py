@@ -49,9 +49,9 @@ def create_app(config_name):
 	from routes.stats.rooms import RoomsStats
 	from routes.stats.rooms_enrolled import RoomsEnrolledStats
 
-	from utils.export_reports import Pdf
+	from routes.reports.creator import ReportsCreator
 
-	api.add_resource(RoomsStats, '/edu/v1/utils/pdfs/create', methods=['POST'], endpoint='g_pdf')
+	api.add_resource(ReportsCreator, '/edu/v1/utils/pdfs/create', methods=['POST'], endpoint='g_pdf')
 
 	api.add_resource(UsersStats, '/edu/v1/stats/users/get', methods=['GET'], endpoint='get_ustats')
 	api.add_resource(TestsStats, '/edu/v1/stats/tests/get', methods=['GET'], endpoint='get_tstats')

@@ -38,7 +38,11 @@ class ResetTrial(Schema):
 class Pdf(Schema):
 	'''
 	'''
-	pass
+	file_name = fields.Str(required=True, validate=[validate.Length(min=5)])
+	url = fields.Url(required=False, schemes=['http', 'https'])
+	file_path = fields.Str(required=False)
+	string = fields.Str(required=False)
+
 
 class TeacherUsers(Schema):
 	'''
