@@ -45,7 +45,7 @@ class Auth(Resource):
 			post_data = request.get_json()
 			token_data.load(post_data)
 
-			columns = {"_id": 0}
+			columns = {"_id": 1, "account_type": 1}
 			queries = post_data
 			collection = 'common_user_master'
 			user_data = FlaskMongo.find(collection, columns, queries)

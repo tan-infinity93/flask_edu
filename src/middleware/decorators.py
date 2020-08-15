@@ -36,6 +36,8 @@ def is_valid_token(func):
 				account_type = token_details.get("account_type")
 				account_scope = c_app.config.get('SCOPES').get(account_type)
 
+				print(f'account_scope: {account_scope}')
+
 				if request.path not in account_scope:
 					response = {
 						'message': 'unable to process request', 
@@ -53,6 +55,7 @@ def is_valid_token(func):
 				return response, auth_error_code, response_headers
 
 			except Exception as e:
+				# raise e
 				response = {'message': 'unable to process request', 'reason': 'server error'}
 				return response, server_error_code, response_headers
 		else:

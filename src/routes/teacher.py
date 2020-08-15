@@ -68,7 +68,7 @@ class TeacherUsers(Resource):
 				"meta": self.meta,
 				"users": query_data
 			}
-			FlaskLogger.log('get', '{self.account_type}_info', response, input_data=str(args_data), log_level='info')
+			FlaskLogger.log('get', f'{self.account_type}_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except Exception as e:
@@ -80,7 +80,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('get', '{self.account_type}_info', response, input_data=str(args_data), log_level='warning')
+			FlaskLogger.log('get', f'{self.account_type}_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -115,7 +115,7 @@ class TeacherUsers(Resource):
 					"message": f"user {username} is already registered",
 					"status": "failure",
 				}
-				FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
+				FlaskLogger.log('post', f'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			post_data["account_type"] = self.account_type
@@ -131,7 +131,7 @@ class TeacherUsers(Resource):
 				# "unique_id": post_data['unique_id'],
 				"status": "success"
 			}
-			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
+			FlaskLogger.log('post', f'add_{self.account_type}_info', response, input_data=str(post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -143,7 +143,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
-			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='error')
+			FlaskLogger.log('post', f'add_{self.account_type}_info', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -155,7 +155,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('post', 'add_{self.account_type}_info', response, input_data=str(post_data), log_level='warning')
+			FlaskLogger.log('post', f'add_{self.account_type}_info', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
@@ -184,7 +184,7 @@ class TeacherUsers(Resource):
 					"message": f"user {user} does not exists",
 					"status": "failure",
 				}
-				FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
+				FlaskLogger.log('put', f'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
 			updates = post_data
@@ -199,7 +199,7 @@ class TeacherUsers(Resource):
 				"message": f"user {user} updated successfully",
 				"status": "success"
 			}
-			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
+			FlaskLogger.log('put', f'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -211,7 +211,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
-			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='error')
+			FlaskLogger.log('put', f'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -222,7 +222,7 @@ class TeacherUsers(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('put', 'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='warning')
+			FlaskLogger.log('put', f'mod_{self.account_type}_info', response, input_data=str(args_data, post_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
