@@ -4,6 +4,7 @@
 # Import Modules:
 
 import json
+import math
 from datetime import datetime
 from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
@@ -46,11 +47,30 @@ class TeacherUsers(Resource):
 			print(args_data)
 
 			user = args_data.get("user", "all")
+			pageno = int(args_data.get("pageno", 1))
 			if user == "all":
+				if pageno > 1:
+					skip = 10 * (pageno - 1)
+				else:
+					skip = 0
 				queries = {"deleted": 0, "account_type": self.account_type}
 				columns = {"_id": 0, "deleted": 0}
 				collection = 'common_user_master'
-				query_data = FlaskMongo.find(collection, columns, queries)
+				query_data1 = FlaskMongo.find(collection, columns, queries)
+
+				queries = {"deleted": 0, "account_type": self.account_type}
+				columns = {"_id": 0, "deleted": 0}
+				query_data2 = FlaskMongo.find(collection, columns, queries, skip=skip, limit=10)
+
+				total_count = len(query_data1)
+				total_pages = math.ceil(total_count/(10))
+				query_data = {
+					'total': total_pages,
+					'pageno': pageno,
+					'previous': pageno - 1 if pageno > 1 and pageno <= total_pages else None,
+					'next': pageno + 1 if pageno < total_pages else None,
+					'data': query_data2
+				}
 			
 			else:
 				queries = {"_id": ObjectId(user), "deleted": 0, "account_type": self.account_type}
@@ -83,7 +103,7 @@ class TeacherUsers(Resource):
 			FlaskLogger.log('get', f'{self.account_type}_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
-	@is_valid_token
+	# @is_valid_token
 	@is_valid_json
 	def post(self):
 		'''

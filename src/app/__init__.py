@@ -38,6 +38,7 @@ def create_app(config_name):
 	from routes.subscription import ResetTrial
 	from routes.teacher import TeacherUsers
 	from routes.student import StudentUsers
+	from routes.admin import AdminUsers
 	from routes.test import TestQuestionDetails, UnDeleteTest
 	from routes.testattempt import TestAttemptDetails, TestAttemptComplete
 	from routes.stat import TestScoresStats, StudentsStats
@@ -50,8 +51,10 @@ def create_app(config_name):
 	from routes.stats.rooms_enrolled import RoomsEnrolledStats
 
 	from routes.reports.creator import ReportsCreator
+	from routes.mails.mailer import EmailsCreator
 
 	api.add_resource(ReportsCreator, '/edu/v1/utils/pdfs/create', methods=['POST'], endpoint='g_pdf')
+	api.add_resource(EmailsCreator, '/edu/v1/utils/mails/create', methods=['POST'], endpoint='g_mail')
 
 	api.add_resource(UsersStats, '/edu/v1/stats/users/get', methods=['GET'], endpoint='get_ustats')
 	api.add_resource(TestsStats, '/edu/v1/stats/tests/get', methods=['GET'], endpoint='get_tstats')
@@ -72,7 +75,12 @@ def create_app(config_name):
 	api.add_resource(StudentUsers, '/edu/v1/users/student/get-user', methods=['GET'], endpoint='get_suser')
 	api.add_resource(StudentUsers, '/edu/v1/users/student/add-user', methods=['POST'], endpoint='add_suser')
 	api.add_resource(StudentUsers, '/edu/v1/users/student/mod-user', methods=['PUT'], endpoint='mod_suser')
-	api.add_resource(TeacherUsers, '/edu/v1/users/student/del-user', methods=['DELETE'], endpoint='del_suser')
+	api.add_resource(StudentUsers, '/edu/v1/users/student/del-user', methods=['DELETE'], endpoint='del_suser')
+
+	api.add_resource(AdminUsers, '/edu/v1/users/admin/get-user', methods=['GET'], endpoint='get_auser')
+	api.add_resource(AdminUsers, '/edu/v1/users/admin/add-user', methods=['POST'], endpoint='add_auser')
+	api.add_resource(AdminUsers, '/edu/v1/users/admin/mod-user', methods=['PUT'], endpoint='mod_auser')
+	api.add_resource(AdminUsers, '/edu/v1/users/admin/del-user', methods=['DELETE'], endpoint='del_auser')
 
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/get-test', methods=['GET'], endpoint='get_test')
 	api.add_resource(TestQuestionDetails, '/edu/v1/tests/create-test', methods=['POST'], endpoint='add_test')

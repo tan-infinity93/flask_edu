@@ -5,6 +5,7 @@
 
 import json
 import uuid
+import math
 from datetime import datetime
 from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
@@ -47,33 +48,55 @@ class TestQuestionDetails(Resource):
 			print(args_data)
 
 			testid = args_data.get("testid", "all")
+			pageno = int(args_data.get("pageno", 1))
 			collection1 = 'common_test_master'
 			collection2 = 'common_question_master'
 
 			if testid == "all":
+				if pageno > 1:
+					skip = 10 * (pageno - 1)
+				else:
+					skip = 0
+
 				columns1 = {"_id": 0}
 				queries1 = {}
 				query_data1 = FlaskMongo.find(
 					collection1, columns1, queries1
 				)
-				print(f'query_data1: {query_data1}\n')
 
-				# testids = [test.get("id") for test in query_data1]
-				test_data = {}
+				total_count = len(query_data1)
+				print(f'total_count: {total_count}\n')
 
-				for idx, qd1 in enumerate(query_data1):
-					columns2 = {"_id": 0}
-					queries2 = {"testid": qd1.get("id")}
-					query_data2 = FlaskMongo.find(collection2, columns2, queries2)
-					print(f'query_data2: {query_data2}\n')
-					print(f'type: {type(query_data2)}\n')
+				columns1 = {"_id": 0}
+				queries1 = {}
+				query_data2 = FlaskMongo.find(
+					collection1, columns1, queries1, skip=skip, limit=10
+				)
+
+				data = {}
+				total_pages = math.ceil(total_count/(10))
+
+				test_data = {
+					'total': total_pages,
+					'pageno': pageno,
+					'previous': pageno - 1 if pageno > 1 and pageno <= total_pages else None,
+					'next': pageno + 1 if pageno < total_pages else None,
+					'data': data
+				}
+
+				for idx, qd1 in enumerate(query_data2):
+					columns3 = {"_id": 0}
+					queries3 = {"testid": qd1.get("id")}
+					query_data3 = FlaskMongo.find(collection2, columns3, queries3)
+					# print(f'query_data3: {query_data3}\n')
+					# print(f'type: {type(query_data3)}\n')
 
 					details = []
 
-					for qd2 in query_data2:
-						qd1.update(qd2)
+					for qd3 in query_data3:
+						qd1.update(qd3)
 						details.append(qd1)
-					test_data[idx] = details
+					data[idx] = details
 
 			else:
 				queries1 = {
@@ -113,7 +136,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='warning')
+			FlaskLogger.log('get', 'tests_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token

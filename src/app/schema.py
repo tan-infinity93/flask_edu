@@ -43,6 +43,12 @@ class Pdf(Schema):
 	file_path = fields.Str(required=False)
 	string = fields.Str(required=False)
 
+class Email(Schema):
+	'''
+	'''
+	receiver_email_id = fields.Email(required=True)
+	email_message = fields.Str(required=True, validate=[validate.Length(min=10)])
+
 
 class TeacherUsers(Schema):
 	'''

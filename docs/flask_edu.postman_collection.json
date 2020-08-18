@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5a48b261-751e-4cb4-b5bc-f21fbab68105",
+		"_postman_id": "4e94e73f-720d-4b90-a9c8-252ace1379ad",
 		"name": "flask_edu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -62,7 +62,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f26d3e1188353aca57d6c76",
+									"raw": "http://localhost:5000/edu/v1/users/teacher/get-user?user=all&pageno=1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -78,17 +78,21 @@
 									"query": [
 										{
 											"key": "user",
-											"value": "all",
-											"disabled": true
+											"value": "all"
 										},
 										{
 											"key": "user",
-											"value": "5f26d3e1188353aca57d6c76"
+											"value": "5f26d3e1188353aca57d6c76",
+											"disabled": true
 										},
 										{
 											"key": "user",
 											"value": "5f1c8e11677eb6114c222416m",
 											"disabled": true
+										},
+										{
+											"key": "pageno",
+											"value": "1"
 										}
 									]
 								},
@@ -170,6 +174,194 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "Admins",
+					"item": [
+						{
+							"name": "Create New Admin User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImIzNDAxOTBlM2ZlMTg0MjIxOGQ2In0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwicGhvbmVfbm8iOiI5MTcwNDUyNzM2NzEiLCJuYW1lIjoidGFubW95IGthcm1va2FyIiwiaW5zdGl0dXRlX3R5cGUiOiJzY2hvb2wiLCJlbWFpbF9pZCI6InRjQGsuY29tIiwiaW5zdGl0dXRlX25hbWUiOiJUZXN0IE9uZSIsImFjY291bnRfdHlwZSI6InRlYWNoZXIiLCJub19mcmVlX3RyaWFsIjoyLCJpc19hY3RpdmUiOnRydWUsImRlbGV0ZWQiOjAsImNyZWF0ZWQiOiIyMDIwLTA4LTAyVDIwOjI1OjI5LjQ4MDg4MyJ9.QLxGd4o718-a_uqyJ0pOC34y_x4D04B9QqFjGtEOh8Y",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273670\",\r\n    \"username\": \"overw@tch\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2098\",\r\n    \"email_id\": \"t@k.com\",\r\n    \"institute_name\": \"FlaskEdu\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/admin/add-user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"admin",
+										"add-user"
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/add-user"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Existing Admin User",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImIzNDAxOTBlM2ZlMTg0MjIxOGQ2In0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwicGhvbmVfbm8iOiI5MTcwNDUyNzM2NzEiLCJuYW1lIjoidGFubW95IGthcm1va2FyIiwiaW5zdGl0dXRlX3R5cGUiOiJzY2hvb2wiLCJlbWFpbF9pZCI6InRjQGsuY29tIiwiaW5zdGl0dXRlX25hbWUiOiJUZXN0IE9uZSIsImFjY291bnRfdHlwZSI6InRlYWNoZXIiLCJub19mcmVlX3RyaWFsIjoyLCJpc19hY3RpdmUiOnRydWUsImRlbGV0ZWQiOjAsImNyZWF0ZWQiOiIyMDIwLTA4LTAyVDIwOjI1OjI5LjQ4MDg4MyJ9.QLxGd4o718-a_uqyJ0pOC34y_x4D04B9QqFjGtEOh8Y",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/admin/get-user?user=all&pageno=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"admin",
+										"get-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "all"
+										},
+										{
+											"key": "user",
+											"value": "5f26d3e1188353aca57d6c76",
+											"disabled": true
+										},
+										{
+											"key": "user",
+											"value": "5f1c8e11677eb6114c222416m",
+											"disabled": true
+										},
+										{
+											"key": "pageno",
+											"value": "1"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/get-user?user=5f1c8e11677eb6114c222416"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Existing Admin User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"917045273671\",\r\n    \"username\": \"tan65\",\r\n    \"name\": \"tanmoy karmokar\",\r\n    \"institute_type\": \"school\",\r\n    \"password\": \"m@broSonu2002\",\r\n    \"email_id\": \"tc@k.com\",\r\n    \"institute_name\": \"Test One\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/admin/mod-user?user=5f26d3e1188353aca57d6c76",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"admin",
+										"mod-user"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "5f26d3e1188353aca57d6c76"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/mod-user?user=5f1c8e11677eb6114c222416"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Existing Admin User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/edu/v1/users/admin/del-user?userid=5f26c66eafeac122d47af6a9",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"edu",
+										"v1",
+										"users",
+										"admin",
+										"del-user"
+									],
+									"query": [
+										{
+											"key": "userid",
+											"value": "5f26c66eafeac122d47af6a9"
+										}
+									]
+								},
+								"description": "http://localhost:5000/edu/v1/users/teacher/get-user?userid=5f26b443ab30202478b59ffe"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "28103762-b922-4fcf-96bf-a0f52f94a225",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ea49e89e-59bc-40a1-b4fa-5c69fe122d81",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Students",
 					"item": [
 						{
@@ -211,7 +403,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=5f26d41a188353aca57d6c77",
+									"raw": "http://localhost:5000/edu/v1/users/student/get-user?user=all&pageno=1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -227,12 +419,16 @@
 									"query": [
 										{
 											"key": "user",
-											"value": "5f26d41a188353aca57d6c77"
+											"value": "5f26d41a188353aca57d6c77",
+											"disabled": true
 										},
 										{
 											"key": "user",
-											"value": "all",
-											"disabled": true
+											"value": "all"
+										},
+										{
+											"key": "pageno",
+											"value": "1"
 										}
 									]
 								},
@@ -323,7 +519,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjM5ZDAyZDY4MmQyYmZiZDVmMzk0In0.eyJ1c2VybmFtZSI6ImNoaW5zNSIsInBhc3N3b3JkIjoibUBicm9Tb251MjAwMiJ9.IIoVnB8kQLvL5yISZ5ScBpcplP1wRK0g4OKQpv3oLyE",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6Ijc5NmViMmM5ZWU3MmJkNWY2ZjAzIn0.eyJ1c2VybmFtZSI6Im92ZXJ3QHRjaCIsInBhc3N3b3JkIjoibUBicm9Tb251MjA5OCIsIl9pZCI6IjVmM2MzMjRkYzM5NWEzNzJjMjgxZTcwZiIsImFjY291bnRfdHlwZSI6ImFkbWluIiwiZXhwIjoxNTk3ODY3MDIzLjgxNzg3NzN9.ODhhwGBd-j9sU-o5jsMFoJaC_Y11bSxfZSTGQ6k0p-Q",
 								"type": "text"
 							}
 						],
@@ -337,7 +533,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/users/reset-trial",
+							"raw": "http://localhost:5000/edu/v1/users/reset-trial?no_free_trial=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -352,8 +548,7 @@
 							"query": [
 								{
 									"key": "no_free_trial",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						},
@@ -374,7 +569,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"tan65\",\r\n    \"password\": \"m@broSonu2002\"\r\n}",
+							"raw": "{\r\n    \"username\": \"overw@tch\",\r\n    \"password\": \"m@broSonu2098\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -409,10 +604,16 @@
 					"name": "Create New Test",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjVlM2UzOTQ2NTczM2E5ZDQ1ZDhiIn0.eyJ1c2VybmFtZSI6InRhbjY1IiwicGFzc3dvcmQiOiJtQGJyb1NvbnUyMDAyIiwiX2lkIjoiNWYyNmQzZTExODgzNTNhY2E1N2Q2Yzc2IiwiYWNjb3VudF90eXBlIjoidGVhY2hlciIsImV4cCI6MTU5Nzc3OTU4Mi42MTM3MDc1fQ.izSoyBFaqGcYVItGMHU4xlpeWldLfYB8cCxSQy8TP2g",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"details\": \"New Sample Test\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-04T12:00:00\",\r\n    \"start_time\": \"2020-08-04T12:00:00\",\r\n    \"end_time\": \"2020-08-04T14:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"duration\": 2.0\r\n}",
+							"raw": "{\r\n    \"details\": \"New Sample Test2\",\r\n    \"customerid\": \"5f26d3e1188353aca57d6c76\",\r\n    \"no_mandatory_questions\": 1,\r\n    \"schedule\": \"2020-08-24T12:00:00\",\r\n    \"start_time\": \"2020-08-24T12:00:00\",\r\n    \"end_time\": \"2020-08-24T14:00:00\",\r\n    \"qna\": [\r\n        {\r\n            \"question\": \"2+2\",\r\n            \"options\": [\r\n                \"2\",\r\n                \"3\",\r\n                \"4\",\r\n                \"5\"\r\n            ],\r\n            \"answer\": \"c\"\r\n        }\r\n    ],\r\n    \"duration\": 2.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -452,7 +653,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=cedab574d5ba11eaaff5b42e998c02ed",
+							"raw": "http://localhost:5000/edu/v1/tests/get-test?testid=all&pageno=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -467,8 +668,7 @@
 							"query": [
 								{
 									"key": "testid",
-									"value": "all",
-									"disabled": true
+									"value": "all"
 								},
 								{
 									"key": "testid",
@@ -477,7 +677,12 @@
 								},
 								{
 									"key": "testid",
-									"value": "cedab574d5ba11eaaff5b42e998c02ed"
+									"value": "cedab574d5ba11eaaff5b42e998c02ed",
+									"disabled": true
+								},
+								{
+									"key": "pageno",
+									"value": "2"
 								}
 							]
 						},
@@ -1253,6 +1458,39 @@
 							]
 						},
 						"description": "http://localhost:5000/edu/v1/utils/pdfs/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Emails",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receiver_email_id\": \"tkarmokar32@gmail.com\",\r\n    \"email_message\": \"Test from Flask App\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/edu/v1/utils/mails/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"edu",
+								"v1",
+								"utils",
+								"mails",
+								"create"
+							]
+						},
+						"description": "http://localhost:5000/edu/v1/utils/mails/create"
 					},
 					"response": []
 				}

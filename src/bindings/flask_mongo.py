@@ -52,7 +52,7 @@ class FlaskMongo:
 			raise e
 
 	@staticmethod
-	def find(collection, columns, queries, distinct=False, distinct_column=None, aggregate=None):
+	def find(collection, columns, queries, distinct=False, distinct_column=None, aggregate=None, skip=0, limit=0):
 		'''
 		'''
 		try:
@@ -68,18 +68,24 @@ class FlaskMongo:
 				data = [d for d in data]
 
 			else:
-				data = col.find(queries, columns)
+				if limit > 0:
+					if skip > 0:
+						data = col.find(queries, columns).skip(skip).limit(limit)
+					else:
+						data = col.find(queries, columns).limit(limit)
+				else:
+					data = col.find(queries, columns)
 
-				print(f'queries: {queries}')
-				print(f'columns: {columns}')
-				print(f'collection: {collection}')
+				# print(f'queries: {queries}')
+				# print(f'columns: {columns}')
+				# print(f'collection: {collection}')
 				# print(f'data: {list(data)}')
 
-				print(type(data))
+				# print(type(data))
 
 				if isinstance(data, pymongo.cursor.Cursor):
 					data = [d for d in data]
-					print(f'data: {data}\n')
+					# print(f'data: {data}\n')
 					# if len(data) == 1:
 					# 	data = data[0]
 					# 	if "_id" in data:

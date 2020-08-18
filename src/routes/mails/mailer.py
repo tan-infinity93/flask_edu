@@ -16,15 +16,15 @@ from bindings.flask_mongo import FlaskMongo
 from bson.objectid import ObjectId
 from middleware.decorators import is_valid_args, is_valid_json
 from utils.common_functions import format_api_error
-from utils.export_reports import PdfGenerator
-from app.schema import Pdf
+from utils.send_emails import Gmailer
+from app.schema import Email
 from bindings.flask_logger import FlaskLogger
 
-pdf_schema = Pdf()
+email_schema = Email()
 
 # Class Definitions:
 
-class ReportsCreator(Resource):
+class EmailsCreator(Resource):
 	'''
 	'''
 	def __init__(self):
@@ -48,46 +48,22 @@ class ReportsCreator(Resource):
 		'''
 		try:
 			post_data = request.get_json()
-			pdf_schema.load(post_data, partial=True)
+			email_schema.load(post_data)
 
-			file_name = post_data.get('file_name')
-			url = post_data.get('url')
-			file_path = post_data.get('file_path')
-			string = post_data.get('string')
+			receiver_email_id = post_data.get('receiver_email_id')
+			email_message = post_data.get('email_message')
 
-			pdf_generator = PdfGenerator(file_name)
-
-			if url:
-				source = 'url'
-				# pdf_generator.parse_url(url)
-				background_task = Thread(
-					target=pdf_generator.parse_url, args=(url,)
-				)
-				background_task.daemon = True
-				background_task.start()
-
-			if file_path:
-				source = 'file_path'
-				# pdf_generator.parse_file(file_path)
-				background_task = Thread(
-					target=pdf_generator.parse_file, args=(file_path, )
-				)
-				background_task.daemon = True
-				background_task.start()
-
-			if string:
-				source = 'string'
-				# pdf_generator.parse_string(string)
-				background_task = Thread(
-					target=pdf_generator.parse_file, args=(string, )
-				)
-				background_task.daemon = True
-				background_task.start()
+			mailer = Gmailer()
+			background_task = Thread(
+				target=mailer.send_mail, args=(receiver_email_id, email_message)
+			)
+			background_task.daemon = True
+			background_task.start()
 
 			response = {
 				'meta': self.meta,
 				'status': 'success',
-				'message': f'pdf generating from {source} successfully'
+				'message': f'sending email successfully'
 			}
 			return response, self.processing_code, self.headers
 
@@ -100,7 +76,7 @@ class ReportsCreator(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
-			FlaskLogger.log('post', 'create_pdf', response, input_data=str(post_data), log_level='error')
+			FlaskLogger.log('post', 'create_email', response, input_data=str(post_data), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -112,5 +88,5 @@ class ReportsCreator(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('post', 'create_pdf', response, input_data=str(post_data), log_level='warning')
+			FlaskLogger.log('post', 'create_email', response, input_data=str(post_data), log_level='warning')
 			return response, self.exception_code, self.headers
