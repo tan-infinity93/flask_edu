@@ -67,7 +67,7 @@ class ResetTrial(Resource):
 				return response, self.bad_code, self.headers
 			else:
 				if args_data:
-					no_free_trial = args_data.get('no_free_trial')
+					no_free_trial = int(args_data.get('no_free_trial'))
 				else:
 					no_free_trial = 2
 				
@@ -97,7 +97,7 @@ class ResetTrial(Resource):
 		
 		except Exception as e:
 			# raise e
-			print(e)
+			# print(e)
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request",

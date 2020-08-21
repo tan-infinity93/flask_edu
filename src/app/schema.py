@@ -161,9 +161,10 @@ class TestQuestionDetails(TestDetails):
 
 		elif end_time > schedule_time:
 			time_delta = (end_time - start_time).total_seconds()/60
-			print(f'time_delta: {time_delta}')
-			print(type(time_delta))
-			print(f'duration: {duration}')
+			# print(f'time_delta: {time_delta}')
+			# print(type(time_delta))
+			# print(f'duration: {duration}')
+			# print(type(duration))
 			if duration < (time_delta):
 				error = {'difference': 'duration and time delta do not match, should be equal'}
 				raise ValidationError(error)

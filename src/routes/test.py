@@ -250,7 +250,7 @@ class TestQuestionDetails(Resource):
 		
 		except Exception as e:
 			# raise e
-			print(e)
+			# print(e)
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request",
