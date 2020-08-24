@@ -4,6 +4,7 @@
 # Import Modules:
 
 import json
+import math
 from datetime import datetime
 from flask import Flask, request, current_app as c_app
 from flask_restful import Resource
@@ -48,12 +49,38 @@ class RoomsApi(Resource):
 
 			room_id = args_data.get("room_id", "all")
 			teacher_id = args_data.get("teacher_id")
+			pageno = int(args_data.get("pageno", 1))
 
 			if room_id == "all":
+				if pageno > 1:
+					skip = 10 * (pageno - 1)
+				else:
+					skip = 0
+
 				queries = {"deleted": 0, "teacher_id": teacher_id}
 				columns = {"_id": 0, "deleted": 0}
 				collection = 'common_room_master'
 				query_data = FlaskMongo.find(collection, columns, queries)
+
+				total_count = len(query_data)
+
+				queries1 = {"deleted": 0, "teacher_id": teacher_id}
+				columns1 = {"_id": 0, "deleted": 0}
+				query_data1 = FlaskMongo.find(
+					collection, columns1, queries1, skip=skip, limit=10
+				)
+
+				data = {}
+				total_pages = math.ceil(total_count/(10))
+
+				rooms_data = {
+					'total_count': total_count,
+					'total': total_pages,
+					'pageno': pageno,
+					'previous': pageno - 1 if pageno > 1 and pageno <= total_pages else None,
+					'next': pageno + 1 if pageno < total_pages else None,
+			        'data': query_data1
+				}
 			
 			else:
 				queries = {"deleted": 0, "teacher_id": teacher_id, "room_id": room_id}
@@ -65,11 +92,13 @@ class RoomsApi(Resource):
 				else:
 					query_data = {}
 
-			print(f'query_data: {query_data}')
+				print(f'query_data: {query_data}')
+				rooms_data = query_data
 
+			
 			response = {
 				"meta": self.meta,
-				"rooms": query_data
+				"rooms_data": rooms_data
 			}
 			FlaskLogger.log('get', 'rooms_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
