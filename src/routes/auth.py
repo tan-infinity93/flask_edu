@@ -51,6 +51,7 @@ class Auth(Resource):
 			user_data = FlaskMongo.find(collection, columns, queries)
 
 			print(post_data)
+			print(f'user_data: {user_data}')
 			username = post_data.get('username')
 
 			if user_data == []:

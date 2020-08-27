@@ -76,9 +76,9 @@ class FlaskMongo:
 				else:
 					data = col.find(queries, columns)
 
-				# print(f'queries: {queries}')
-				# print(f'columns: {columns}')
-				# print(f'collection: {collection}')
+				print(f'queries: {queries}')
+				print(f'columns: {columns}')
+				print(f'collection: {collection}')
 				# print(f'data: {list(data)}')
 
 				# print(type(data))

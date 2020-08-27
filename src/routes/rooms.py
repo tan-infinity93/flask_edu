@@ -244,7 +244,7 @@ class RoomsApi(Resource):
 					"message": f"teacher with id {teacher_id} does not exists",
 					"status": "failure",
 				}
-				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
+				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str({'ad': args_data, 'pd': post_data}), log_level='info')
 				return response, self.bad_code, self.headers
 
 			if room_data == []:
@@ -253,7 +253,7 @@ class RoomsApi(Resource):
 					"message": f"room with id {room_id} does not exists",
 					"status": "failure",
 				}
-				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
+				FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str({'ad': args_data, 'pd': post_data}), log_level='info')
 				return response, self.bad_code, self.headers
 
 			######
@@ -270,7 +270,7 @@ class RoomsApi(Resource):
 				"message": f"room with id {room_id} updated successfully",
 				"status": "success"
 			}
-			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='info')
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str({'ad': args_data, 'pd': post_data}), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
@@ -282,7 +282,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"errors": format_api_error(e.messages)
 			}
-			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='error')
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str({'ad': args_data, 'pd': post_data}), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -293,7 +293,7 @@ class RoomsApi(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str(args_data, post_data), log_level='warning')
+			FlaskLogger.log('put', 'mod_rooms_info', response, input_data=str({'ad': args_data, 'pd': post_data}), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token
