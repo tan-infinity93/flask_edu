@@ -59,7 +59,7 @@ class TestQuestionDetails(Resource):
 					skip = 0
 
 				columns1 = {"_id": 0}
-				queries1 = {}
+				queries1 = {"deleted": 0}
 				query_data1 = FlaskMongo.find(
 					collection1, columns1, queries1
 				)
@@ -68,7 +68,7 @@ class TestQuestionDetails(Resource):
 				print(f'total_count: {total_count}\n')
 
 				columns1 = {"_id": 0}
-				queries1 = {}
+				queries1 = {"deleted": 0}
 				query_data2 = FlaskMongo.find(
 					collection1, columns1, queries1, skip=skip, limit=10
 				)
@@ -103,7 +103,7 @@ class TestQuestionDetails(Resource):
 					"id": testid
 				}
 				columns1 = {"_id": 0}
-				queries2 = {"testid": testid}
+				queries2 = {"testid": testid, "deleted": 0}
 				columns2 = {"customerid": 0, "testid": 0}
 				query_data1 = FlaskMongo.find(collection1, columns1, queries1)
 				query_data2 = FlaskMongo.find(collection2, columns2, queries2)
@@ -277,7 +277,7 @@ class TestQuestionDetails(Resource):
 			args_data.update(post_data)
 			testquestion_data.load(post_data, partial=True)
 
-			test_id = args_data.get("test_id")
+			test_id = args_data.get("testid")
 			queries = {
 				'id': test_id, "deleted": 0
 			}
@@ -293,7 +293,7 @@ class TestQuestionDetails(Resource):
 					"message": f"test with id {test_id} does not exists",
 					"status": "failure",
 				}
-				FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='info')
+				FlaskLogger.log('put', 'mod_tests_info', response, input_data=str({'ad':args_data, 'pd':post_data}), log_level='info')
 				return response, self.bad_code, self.headers
 
 			collection1 = 'common_test_master'
@@ -335,17 +335,18 @@ class TestQuestionDetails(Resource):
 				"message": f"test with id {test_id} updated successfully",
 				"status": "success"
 			}
-			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='info')
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str({'ad':args_data, 'pd':post_data}), log_level='info')
 			return response, self.success_code, self.headers
 
 		except ValidationError as e:
+			print(f'exception: {e}\n')
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request",
 				"status": "failure",
 				"reason": format_api_error(e.messages)
 			}
-			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='error')
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str({'ad':args_data, 'pd':post_data}), log_level='error')
 			return response, self.bad_code, self.headers
 
 		except Exception as e:
@@ -357,7 +358,7 @@ class TestQuestionDetails(Resource):
 				"status": "failure",
 				"reason": str(e)
 			}
-			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str(args_data, post_data), log_level='warning')
+			FlaskLogger.log('put', 'mod_tests_info', response, input_data=str({'ad':args_data, 'pd':post_data}), log_level='warning')
 			return response, self.exception_code, self.headers
 
 	@is_valid_token

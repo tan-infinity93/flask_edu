@@ -7,8 +7,8 @@ import csv
 import logging
 from datetime import datetime, date
 from flask import current_app as c_app
-from logstash_async.handler import AsynchronousLogstashHandler
-from logstash_async.constants import constants
+# from logstash_async.handler import AsynchronousLogstashHandler
+# from logstash_async.constants import constants
 
 # Class Definition:
 
@@ -42,12 +42,12 @@ class FlaskLogger:
 				APP_LOGS.addHandler(FH)
 				APP_LOGS.addHandler(CH)
 
-			if app_env == 'production':
-				kibana_host = app.config.get("KIBANA_HOST")
-				kibana_port = app.config.get("KIBANA_PORT")
-				APP_LOGS = logging.getLogger(logger.replace('.log', ''))
-				APP_LOGS.setLevel(logging.INFO)
-				APP_LOGS.addHandler(AsynchronousLogstashHandler(kibana_host, kibana_port, database_path=None))
+			# if app_env == 'production':
+			# 	kibana_host = app.config.get("KIBANA_HOST")
+			# 	kibana_port = app.config.get("KIBANA_PORT")
+			# 	APP_LOGS = logging.getLogger(logger.replace('.log', ''))
+			# 	APP_LOGS.setLevel(logging.INFO)
+			# 	APP_LOGS.addHandler(AsynchronousLogstashHandler(kibana_host, kibana_port, database_path=None))
 
 			app.config['APP_LOGS'] = APP_LOGS
 
