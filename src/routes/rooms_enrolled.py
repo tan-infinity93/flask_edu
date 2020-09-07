@@ -3,6 +3,7 @@
 
 # Import Modules:
 
+import math
 import json
 from datetime import datetime
 from flask import Flask, request, current_app as c_app
@@ -11,6 +12,7 @@ from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from middleware.decorators import is_valid_args, is_valid_json, is_valid_token
 from bindings.flask_mongo import FlaskMongo
+from bindings.flask_logger import FlaskLogger
 from utils.common_functions import get_uuid1, format_api_error
 from app.schema import RoomsEnrolled
 
@@ -46,35 +48,81 @@ class RoomsEnrolled(Resource):
 
 			room_id = args_data.get("room_id", "all")
 			teacher_id = args_data.get("teacher_id")
+			pageno = int(args_data.get("pageno", 1))
+			groupby_aggregate = args_data.get('groupby_aggregate', 'no')
 
 			if room_id == "all":
+				if pageno > 1:
+					skip = 10 * (pageno - 1)
+				else:
+					skip = 0
+
 				if teacher_id == "all":
 					queries = {"deleted": 0}
 				else:
 					queries = {"deleted": 0, "teacher_id": teacher_id}
+				
 				columns = {"_id": 0, "deleted": 0}
 				collection = 'common_room_enroll_master'
 				query_data = FlaskMongo.find(collection, columns, queries)
+
+				total_count = len(query_data)
+
+				if groupby_aggregate == 'yes':
+					columns = {'_id': 0}
+					queries = {}
+					aggregate_pipeline = [
+						{
+							'$group': {
+								'_id': '$room_id', 
+								'student_names': {'$addToSet': '$name'}, 
+								'count': {'$sum': 1}
+							}
+						}
+					]
+					query_data1 = FlaskMongo.find(collection, columns, queries, aggregate=aggregate_pipeline)
+				
+				else:
+					queries1 = {"deleted": 0, "teacher_id": teacher_id}
+					columns1 = {"_id": 0, "deleted": 0}
+					query_data1 = FlaskMongo.find(
+						collection, columns1, queries1, skip=skip, limit=10
+					)
+
+				total_pages = math.ceil(total_count/(10))
+
+				rooms_enroll_data = {
+					'total_count': total_count,
+					'total': total_pages,
+					'pageno': pageno,
+					'previous': pageno - 1 if pageno > 1 and pageno <= total_pages else None,
+					'next': pageno + 1 if pageno < total_pages else None,
+			        'data': query_data1
+				}
 			
 			else:
 				if teacher_id == "all":
 					queries = {"deleted": 0, "room_id": room_id}
 				else:
 					queries = {"deleted": 0, "teacher_id": teacher_id, "room_id": room_id}
+				
 				columns = {"_id": 0, "deleted": 0}
 				collection = 'common_room_enroll_master'
 				query_data = FlaskMongo.find(collection, columns, queries)
+				
 				if query_data:
 					if len(query_data) == 1:
 						query_data = query_data[0]
 				else:
 					query_data = {}
 
+				rooms_enroll_data = query_data
+
 			print(f'query_data: {query_data}')
 
 			response = {
 				"meta": self.meta,
-				"rooms_enrollment": query_data
+				"rooms_enrollment": rooms_enroll_data
 			}
 			FlaskLogger.log('get', 'rooms_enrol_info', response, input_data=str(args_data), log_level='info')
 			return response, self.success_code, self.headers
@@ -157,6 +205,7 @@ class RoomsEnrolled(Resource):
 				FlaskLogger.log('post', 'add_rooms_enroll_info', response, input_data=str(post_data), log_level='info')
 				return response, self.bad_code, self.headers
 
+			post_data["name"] = user_data[0].get('name')
 			post_data["banned"] = 0
 			post_data["deleted"] = 0
 			post_data["created"] = datetime.now().isoformat()
@@ -343,3 +392,4 @@ class RoomsEnrolled(Resource):
 			}
 			FlaskLogger.log('delete', 'del_rooms_enroll_info', response, input_data=str(args_data), log_level='warning')
 			return response, self.exception_code, self.headers
+
