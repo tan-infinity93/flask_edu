@@ -39,7 +39,7 @@ class RoomsEnrolled(Resource):
 
 	@is_valid_token
 	@is_valid_args
-	def get(self):
+	def get(self, **kwargs):
 		'''
 		'''
 		try:
@@ -141,7 +141,7 @@ class RoomsEnrolled(Resource):
 
 	@is_valid_token
 	@is_valid_json
-	def post(self):
+	def post(self, **kwargs):
 		'''
 		'''
 		try:
@@ -246,7 +246,7 @@ class RoomsEnrolled(Resource):
 	@is_valid_token
 	@is_valid_args
 	@is_valid_json
-	def put(self):
+	def put(self, **kwargs):
 		'''
 		'''
 		try:
@@ -327,7 +327,7 @@ class RoomsEnrolled(Resource):
 
 	@is_valid_token
 	@is_valid_args
-	def delete(self):
+	def delete(self, **kwargs):
 		'''
 		'''
 		try:

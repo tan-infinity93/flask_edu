@@ -40,7 +40,7 @@ class TestQuestionDetails(Resource):
 
 	@is_valid_token
 	@is_valid_args
-	def get(self):
+	def get(self, **kwargs):
 		'''
 		'''
 		try:
@@ -49,6 +49,9 @@ class TestQuestionDetails(Resource):
 
 			testid = args_data.get("testid", "all")
 			pageno = int(args_data.get("pageno", 1))
+			cols = args_data.get('cols')
+			teacher_id = kwargs.get("_id")
+
 			collection1 = 'common_test_master'
 			collection2 = 'common_question_master'
 
@@ -67,36 +70,60 @@ class TestQuestionDetails(Resource):
 				total_count = len(query_data1)
 				print(f'total_count: {total_count}\n')
 
-				columns1 = {"_id": 0}
-				queries1 = {"deleted": 0}
+				if cols:
+					columns = cols.split(',')
+					# print(f'\ncols: {cols}\n')
+					# print(f'\ncols: {dict((k, 0) for k in cols)}\n')
+					columns1 = {"_id": 0}
+					columns1.update(dict((k, 1) for k in columns))
+					queries1 = {"deleted": 0, "teacher_id": teacher_id}
+				else:
+					columns = []
+					columns1 = {"_id": 0}
+					queries1 = {"deleted": 0, "teacher_id": teacher_id}
+				
 				query_data2 = FlaskMongo.find(
 					collection1, columns1, queries1, skip=skip, limit=10
 				)
 
 				data = {}
+
+				print(f'query_data2: {query_data2}\n')
+
+				if cols:
+					if len(columns) == 1:
+						select_column = columns[0]
+						print(f'select_column: {select_column}')
+						data = [
+							d[select_column] for d in query_data2
+						]
+					else:
+						data = query_data2
+				else:
+					for idx, qd1 in enumerate(query_data2):
+						columns3 = {"_id": 0}
+						queries3 = {"testid": qd1.get("id")}
+						query_data3 = FlaskMongo.find(collection2, columns3, queries3)
+						# print(f'query_data3: {query_data3}\n')
+						# print(f'type: {type(query_data3)}\n')
+
+						details = []
+
+						for qd3 in query_data3:
+							qd1.update(qd3)
+							details.append(qd1)
+						data[idx] = details
+
 				total_pages = math.ceil(total_count/(10))
 
 				test_data = {
+					'total_count': total_count,
 					'total': total_pages,
 					'pageno': pageno,
 					'previous': pageno - 1 if pageno > 1 and pageno <= total_pages else None,
 					'next': pageno + 1 if pageno < total_pages else None,
 					'data': data
 				}
-
-				for idx, qd1 in enumerate(query_data2):
-					columns3 = {"_id": 0}
-					queries3 = {"testid": qd1.get("id")}
-					query_data3 = FlaskMongo.find(collection2, columns3, queries3)
-					# print(f'query_data3: {query_data3}\n')
-					# print(f'type: {type(query_data3)}\n')
-
-					details = []
-
-					for qd3 in query_data3:
-						qd1.update(qd3)
-						details.append(qd1)
-					data[idx] = details
 
 			else:
 				queries1 = {
@@ -141,7 +168,7 @@ class TestQuestionDetails(Resource):
 
 	@is_valid_token
 	@is_valid_json
-	def post(self):
+	def post(self, **kwargs):
 		"""
 		"""
 		try:
@@ -149,6 +176,7 @@ class TestQuestionDetails(Resource):
 			post_data = request.get_json()
 
 			# print(post_data)
+			print(f'kwargs: {kwargs}')
 
 			testquestion_data.load(post_data)
 
@@ -193,9 +221,11 @@ class TestQuestionDetails(Resource):
 
 			else:
 				testid = str(uuid.uuid1()).replace("-", "")
+				teacher_id = kwargs.get("_id")
 
 				data1 = {
 					"id": testid,
+					"teacher_id": teacher_id,
 					"details": post_data.get("details"),
 					"schedule": post_data.get("schedule"),
 					"duration": post_data.get("duration"),
@@ -263,7 +293,7 @@ class TestQuestionDetails(Resource):
 	@is_valid_token
 	@is_valid_args
 	@is_valid_json
-	def put(self):
+	def put(self, **kwargs):
 		'''
 			Issue: check time validators, works in post request
 		'''
@@ -363,7 +393,7 @@ class TestQuestionDetails(Resource):
 
 	@is_valid_token
 	@is_valid_args
-	def delete(self):
+	def delete(self, **kwargs):
 		'''
 		'''
 		try:

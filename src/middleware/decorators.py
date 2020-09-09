@@ -32,11 +32,12 @@ def is_valid_token(func):
 				token_details = jwt.decode(auth_token, key, algorithms=['HS256'])
 				print(f'token_details: {token_details}\n')
 				response = token_details
+				kwargs['_id'] = token_details.get('_id')
 
 				account_type = token_details.get("account_type")
 				account_scope = c_app.config.get('SCOPES').get(account_type)
 
-				print(f'account_scope: {account_scope}')
+				# print(f'account_scope: {account_scope}')
 
 				if request.path not in account_scope:
 					response = {
