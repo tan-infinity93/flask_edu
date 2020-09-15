@@ -50,6 +50,8 @@ class RoomsApi(Resource):
 			room_id = args_data.get("room_id", "all")
 			teacher_id = args_data.get("teacher_id")
 			pageno = int(args_data.get("pageno", 1))
+			cols = args_data.get('cols')
+			teacher_id = kwargs.get("_id")
 
 			if room_id == "all":
 				if pageno > 1:
@@ -64,8 +66,17 @@ class RoomsApi(Resource):
 
 				total_count = len(query_data)
 
-				queries1 = {"deleted": 0, "teacher_id": teacher_id}
-				columns1 = {"_id": 0, "deleted": 0}
+				if cols:
+					columns = cols.split(',')
+					# print(f'\ncols: {cols}\n')
+					# print(f'\ncols: {dict((k, 0) for k in cols)}\n')
+					columns1 = {"_id": 0}
+					columns1.update(dict((k, 1) for k in columns))
+					queries1 = {"deleted": 0, "teacher_id": teacher_id}
+				else:
+					queries1 = {"deleted": 0, "teacher_id": teacher_id}
+					columns1 = {"_id": 0, "deleted": 0}
+				
 				query_data1 = FlaskMongo.find(
 					collection, columns1, queries1, skip=skip, limit=10
 				)

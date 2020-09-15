@@ -49,6 +49,7 @@ class TestQuestionDetails(Resource):
 
 			testid = args_data.get("testid", "all")
 			pageno = int(args_data.get("pageno", 1))
+			room_name = args_data.get('room_name')
 			cols = args_data.get('cols')
 			teacher_id = kwargs.get("_id")
 
@@ -74,12 +75,12 @@ class TestQuestionDetails(Resource):
 					columns = cols.split(',')
 					# print(f'\ncols: {cols}\n')
 					# print(f'\ncols: {dict((k, 0) for k in cols)}\n')
-					columns1 = {"_id": 0}
+					columns1 = {"_id": 0, "room_name": room_name}
 					columns1.update(dict((k, 1) for k in columns))
 					queries1 = {"deleted": 0, "teacher_id": teacher_id}
 				else:
 					columns = []
-					columns1 = {"_id": 0}
+					columns1 = {"_id": 0, "room_name": room_name}
 					queries1 = {"deleted": 0, "teacher_id": teacher_id}
 				
 				query_data2 = FlaskMongo.find(
@@ -188,6 +189,8 @@ class TestQuestionDetails(Resource):
 			collection3 = 'common_user_master'
 
 			customer_id = post_data.get('customerid')
+			room_name = post_data.get('room_name')
+
 			columns = {"_id": 0, "deleted": 0}
 			queries = {"_id": ObjectId(customer_id)}
 			user_data = FlaskMongo.find(collection3, columns, queries)
@@ -226,6 +229,7 @@ class TestQuestionDetails(Resource):
 				data1 = {
 					"id": testid,
 					"teacher_id": teacher_id,
+					"room_name": room_name,
 					"details": post_data.get("details"),
 					"schedule": post_data.get("schedule"),
 					"duration": post_data.get("duration"),

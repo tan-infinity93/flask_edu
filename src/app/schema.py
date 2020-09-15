@@ -102,6 +102,7 @@ class TestDetails(Schema):
 	start_time = fields.DateTime(required=True)
 	end_time = fields.DateTime(required=True)
 	no_mandatory_questions = fields.Integer(required=True, strict=True, validate=[validate.Range(min=1, max=10)])
+	room_name = fields.Str(required=True)
 
 class QuestionAnswer(Schema):
 	'''

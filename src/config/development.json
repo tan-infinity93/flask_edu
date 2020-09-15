@@ -5,7 +5,7 @@
 	"MONGO_PASSWORD": "guest",
 	"MONGO_DATABASE": "whatsapp_edu",
 	"MONGO_URL": "mongodb://localhost:27017/",
-	"FILES_DIR": "/mnt/c/Users/chinmay-pc/Desktop/work/flask_edu/files",
+	"FILES_DIR": "/mnt/c/Users/TAN-PC/Desktop/work/flask_edu/files",
 	"SMTP_SERVER": "smtp.gmail.com",
 	"SMTP_PORT": 587,
 	"SMTP_EMAIL_ID": "tkarmokar32@gmail.com",
